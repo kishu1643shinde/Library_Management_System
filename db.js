@@ -7,7 +7,7 @@ const db=mysql.createConnection({
     // database:process.env.DB_NAME,
     host:"localhost",
     user:"root",
-    password:"v1643@gmail#",
+    password:"root",
     database:"lmsdb"
 });
 db.connect((err)=>{
