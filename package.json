@@ -7,10 +7,19 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "mysql2": "^3.14.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kishu1643shinde/Library_Management_System.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kishu1643shinde/Library_Management_System/issues"
+  },
+  "homepage": "https://github.com/kishu1643shinde/Library_Management_System#readme",
+  "description": ""
 }
