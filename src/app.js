@@ -2,7 +2,7 @@ let express=require("express");
 let mysql=require("mysql2");
 let bodyparser=require("body-parser");
 let cookieParser=require("cookie-parser");
-let router=require("../src/routes/router.js");
+let router=require("./routes/router.js");
 let app=express();
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended:true}));
