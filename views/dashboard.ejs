@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+    }
+
+    header {
+      background-color: #673ab7;
+      color: white;
+      padding: 15px 30px;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4a148c;
+      cursor: pointer;
+      margin-bottom: 5px;
+      padding: 8px 10px;
+      background-color: #ede7f6;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .section-title:hover {
+      background-color: #d1c4e9;
+    }
+
+    .links {
+      display: none;
+      padding-left: 15px;
+      margin-top: 5px;
+    }
+
+    .links a {
+      display: block;
+      text-decoration: none;
+      color: #333;
+      font-size: 15px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
+      background-color: #f3f4f6;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .links a:hover {
+      background-color: #c5cae9;
+      color: #000;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background-color: #f8f9fa;
+    }
+
+    .main-content h2 {
+      color: #4a148c;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <header>📚 Admin Dashboard</header>
+
+    <div class="container">
+      <aside class="sidebar">
+        <div class="section">
+          <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
+          <div class="links" id="studentLinks">
+            <a href="#">➕ Add Student</a>
+            <a href="#">📄 View Students</a>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title" onclick="toggleMenu('categoryLinks')">📁 Category</div>
+          <div class="links" id="categoryLinks">
+            <a href="#">➕ Add Category</a>
+            <a href="#">📄 View Category</a>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title" onclick="toggleMenu('bookLinks')">📚 Book</div>
+          <div class="links" id="bookLinks">
+            <a href="#">➕ Add Books</a>
+            <a href="#">📄 View Books</a>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <h2>🎉 Welcome Admin!</h2>
+        <p>Select any module from the left menu to manage students, categories, or books.</p>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu(id) {
+      const element = document.getElementById(id);
+      element.style.display = (element.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
