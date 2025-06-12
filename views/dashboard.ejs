@@ -13,20 +13,46 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(to right, #e0eafc, #cfdef3);
+      min-height: 100vh;
     }
 
-    header {
-      background-color: #673ab7;
-      color: white;
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #512da8;
       padding: 15px 30px;
-      font-size: 24px;
+      color: white;
+      font-size: 18px;
       font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
+    .navbar .logo {
+      font-size: 24px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .navbar ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: normal;
+      transition: color 0.3s;
+    }
+
+    .navbar ul li a:hover {
+      color: #ffeb3b;
+    }
+
+    /* Layout */
     .container {
       display: flex;
-      min-height: 100vh;
+      min-height: calc(100vh - 60px);
     }
 
     .sidebar {
@@ -88,43 +114,44 @@
 
     .main-content h2 {
       color: #4a148c;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="dashboard">
-    <header>📚 Admin Dashboard</header>
+  <!-- Navbar Include -->
+  <%- include("navbar.ejs") %>
 
-    <div class="container">
-      <aside class="sidebar">
-        <div class="section">
-          <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
-          <div class="links" id="studentLinks">
-            <a href="#">➕ Add Student</a>
-            <a href="#">📄 View Students</a>
-          </div>
+  <!-- Page Content -->
+  <div class="container">
+    <aside class="sidebar">
+      <div class="section">
+        <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
+        <div class="links" id="studentLinks">
+          <a href="#">➕ Add Student</a>
+          <a href="#">📄 View Students</a>
         </div>
-        <div class="section">
-          <div class="section-title" onclick="toggleMenu('categoryLinks')">📁 Category</div>
-          <div class="links" id="categoryLinks">
-            <a href="#">➕ Add Category</a>
-            <a href="#">📄 View Category</a>
-          </div>
+      </div>
+      <div class="section">
+        <div class="section-title" onclick="toggleMenu('categoryLinks')">📁 Category</div>
+        <div class="links" id="categoryLinks">
+          <a href="#">➕ Add Category</a>
+          <a href="#">📄 View Category</a>
         </div>
-        <div class="section">
-          <div class="section-title" onclick="toggleMenu('bookLinks')">📚 Book</div>
-          <div class="links" id="bookLinks">
-            <a href="#">➕ Add Books</a>
-            <a href="#">📄 View Books</a>
-          </div>
+      </div>
+      <div class="section">
+        <div class="section-title" onclick="toggleMenu('bookLinks')">📚 Book</div>
+        <div class="links" id="bookLinks">
+          <a href="#">➕ Add Books</a>
+          <a href="#">📄 View Books</a>
         </div>
-      </aside>
+      </div>
+    </aside>
 
-      <main class="main-content">
-        <h2>🎉 Welcome Admin!</h2>
-        <p>Select any module from the left menu to manage students, categories, or books.</p>
-      </main>
-    </div>
+    <main class="main-content">
+      <h2>📚 Admin Dashboard</h2>
+      <p>Select any module from the left menu to manage students, categories, or books.</p>
+    </main>
   </div>
 
   <script>

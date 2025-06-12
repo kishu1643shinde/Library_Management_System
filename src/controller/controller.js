@@ -10,10 +10,9 @@ exports.loginPage=(req,res)=>{
 exports.acceptAdminDash=(req,res)=>{
     let {username, password} = req.body;
     if(username=="admin" && password=="admin@1643"){
-       
-       
+       res.render("dashboard.ejs");
     }else{
-        
+        console.log("Login Faild");
     }
 }
 
