@@ -116,6 +116,50 @@
       color: #4a148c;
       margin-bottom: 10px;
     }
+    /* Add Student Form Styles */
+#addStudentForm {
+  background-color: #ffffff;
+  padding: 30px;
+  margin: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 500px;
+}
+
+#addStudentForm h2 {
+  margin-bottom: 20px;
+  color: #4a148c;
+}
+
+#addStudentForm form {
+  display: flex;
+  flex-direction: column;
+}
+
+#addStudentForm input,
+#addStudentForm select {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+#addStudentForm button[type="submit"] {
+  padding: 12px;
+  background-color: #512da8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#addStudentForm button[type="submit"]:hover {
+  background-color: #311b92;
+}
+
   </style>
 </head>
 <body>
@@ -128,7 +172,7 @@
       <div class="section">
         <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
         <div class="links" id="studentLinks">
-          <a href="#">➕ Add Student</a>
+          <a href="javascript:void(0)" onclick="showForm('addStudentForm')">➕ Add Student</a>
           <a href="#">📄 View Students</a>
         </div>
       </div>
@@ -148,17 +192,46 @@
       </div>
     </aside>
 
-    <main class="main-content">
-      <h2>📚 Admin Dashboard</h2>
-      <p>Select any module from the left menu to manage students, categories, or books.</p>
-    </main>
+    
+ <main class="main-content">
+  <div id="welcomeMessage">
+    <h2>📚 Admin Dashboard</h2>
+    <p>Select any module from the left menu to manage students, categories, or books.</p>
   </div>
+
+  <div id="addStudentForm" style="display: none;">
+    <h2>Add Student</h2>
+    <form action="/add-student" method="POST">
+      <input type="text" name="name" placeholder="Enter Name" required />
+      <input type="email" name="email" placeholder="Enter Email" required />
+      <input type="password" name="password" placeholder="Enter Password" required />
+      <select name="role" required>
+        <option value="">Select Role</option>
+        <option value="librarian">Librarian</option>
+        <option value="student">Student</option>
+        <option value="member">Member</option>
+      </select>
+      <button type="submit">Add Student</button>
+    </form>
+  </div>
+</main>
 
   <script>
     function toggleMenu(id) {
       const element = document.getElementById(id);
       element.style.display = (element.style.display === 'block') ? 'none' : 'block';
     }
+
+    // 👇 Show selected form and hide others
+  function showForm(formId) {
+    const forms = document.querySelectorAll('.main-content > div');
+    forms.forEach(form => form.style.display = 'none'); // sab form chhupa do
+
+    const selectedForm = document.getElementById(formId);
+    if (selectedForm) {
+      selectedForm.style.display = 'block'; // selected form dikhaye
+    }
+  }
   </script>
 </body>
 </html>

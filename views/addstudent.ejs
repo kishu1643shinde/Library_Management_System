@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Student</title>
+  <link rel="stylesheet" href="addstud.css">
+</head>
+<body>
+  
+  <div class="form-container">
+    <h2> Add Student</h2>
+    <form action="/add-student" method="POST">
+      <input type="text" name="name" placeholder="Enter Name" required />
+      <input type="email" name="email" placeholder="Enter Email" required />
+      <input type="password" name="password" placeholder="Enter Password" required />
+      <select name="role" required>
+        <option value="">Select Role</option>
+        <option value="librarian">Librarian</option>
+        <option value="student">Student</option>
+        <option value="member">Member</option>
+      </select>
+      <button type="submit">Add Student</button>
+    </form>
+  </div>
+
+</body>
+</html>
