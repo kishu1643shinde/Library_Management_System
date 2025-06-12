@@ -16,6 +16,9 @@ exports.acceptAdminDash=(req,res)=>{
         
     }
 }
+exports.addStudentPage=(req,res)=>{
+    res.render("addStudent.ejs");
+}
 
 
 
