@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="HomePage.css">
 </head>
 <body>
-    <h1>WellCome Home Page...</h1>
+    <div class="container">
+        <!-- <nav class="navbar">
+    <div class="logo">Library</div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">View Books</a></li>
+      <li><a href="/Login">Login</a></li>
+    </ul>
+  </nav> -->
+  <%-include("navbar.ejs")%>
+  <div class="btn-div">
+    <button class="btn"><a href="/Login">Get Started</a></button><br>
+    <h3>"Read, explore, manage. Your library, your way."</h3>
+  </div>
+    </div>
 </body>
 </html>
