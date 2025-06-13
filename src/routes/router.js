@@ -11,4 +11,6 @@ router.post("/add-student", controller.addStudent);
 
 router.get("/viewData",controller.viewUserData);
 // router.post("/fetchUser",controller.acceptDataFromuser);
+
+router.get("/deleteUser",controller.deleteUserData);
 module.exports = router;

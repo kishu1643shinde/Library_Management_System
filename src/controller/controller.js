@@ -45,13 +45,12 @@ exports.viewUserData=(req,res)=>{
  
 };
 
-// exports.acceptDataFromuser=(req,res)=>{
 
-//   let result=mod.fetchDataFromUser();
-//   result.then(data=>{
-//     res.render("dashboard.ejs",{userData:data});
-//   })
-// }
-
-
+exports.deleteUserData=(req,res)=>{
+  let did=parseInt(req.query.id);
+  let result=mod.finaldeleteUser(did);
+  result.then((d)=>{
+    mod.fetchDataFromUser(d);
+  });
+}
 
