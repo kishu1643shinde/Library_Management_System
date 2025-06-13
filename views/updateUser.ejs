@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Update Student</title>
+<link rel="stylesheet" href="update.css"/>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Update Student</h2>
+    <form action="/update-student" method="POST">
+      
+      <input type="hidden" name="id" value="" />
+
+      <input type="text" name="name"  value="" required />
+      <input type="email" name="email"  value="" required />
+      <input type="password" name="password"  required />
+
+      <select name="role" required>
+        <option value="">Select Role</option>
+        <option value="librarian">Librarian</option>
+        <option value="student" selected>Student</option>
+        <option value="member">Member</option>
+      </select>
+
+      <button type="submit">Update Student</button>
+    </form>
+  </div>
+
+</body>
+</html>
