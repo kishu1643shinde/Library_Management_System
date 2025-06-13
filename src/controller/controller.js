@@ -60,6 +60,7 @@ exports.finalUpdate=(req,res)=>{
   let result=mod.FinalUpdateOfUser(name,email,password,role,id);
   result.then((Udata)=>{
     res.render("updateUser.ejs",{d:Udata,msg:"Updated Successfully"});
+    
   })
 }
 
