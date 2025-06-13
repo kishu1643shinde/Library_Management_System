@@ -26,8 +26,8 @@
         <th>Password</th>
         <th>Role</th>
         <th>Admission</th>
-        <th>Update</th>
         <th>Delete</th>
+        <th>Update</th>
       </tr>
     </thead>
     <tbody>
@@ -43,6 +43,8 @@
                <td><%=item.created_at%></td>
                 <td><a href="/deleteUser?id=<%=item.id%>">DELETE</a></td>
                <td><a href="#">UPDATE</a></td>
+               <td><a href="#">DELETE</a></td>
+               <td><a href="/update?id=<%=item.id%>">UPDATE</a></td>
             </tr>
              <%
              });
