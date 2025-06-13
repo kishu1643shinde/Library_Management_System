@@ -159,7 +159,11 @@
 #addStudentForm button[type="submit"]:hover {
   background-color: #311b92;
 }
-
+.container{
+  display: flex;
+  flex-direction: row;
+  
+}
   </style>
 </head>
 <body>
@@ -172,8 +176,8 @@
       <div class="section">
         <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
         <div class="links" id="studentLinks">
-          <a href="javascript:void(0)" onclick="showForm('addStudentForm')">➕ Add Student</a>
-          <a href="#">📄 View Students</a>
+          <a href="/addstudapp">➕ Add Student</a>
+          <a href="/viewData">📄 View Students</a>
         </div>
       </div>
       <div class="section">
@@ -199,21 +203,6 @@
     <p>Select any module from the left menu to manage students, categories, or books.</p>
   </div>
 
-  <div id="addStudentForm" style="display: none;">
-    <h2>Add Student</h2>
-    <form action="/add-student" method="POST">
-      <input type="text" name="name" placeholder="Enter Name" required />
-      <input type="email" name="email" placeholder="Enter Email" required />
-      <input type="password" name="password" placeholder="Enter Password" required />
-      <select name="role" required>
-        <option value="">Select Role</option>
-        <option value="librarian">Librarian</option>
-        <option value="student">Student</option>
-        <option value="member">Member</option>
-      </select>
-      <button type="submit">Add Student</button>
-    </form>
-  </div>
 </main>
 
   <script>
@@ -222,16 +211,17 @@
       element.style.display = (element.style.display === 'block') ? 'none' : 'block';
     }
 
-    // 👇 Show selected form and hide others
+    // this fuction call Add user from 
   function showForm(formId) {
     const forms = document.querySelectorAll('.main-content > div');
-    forms.forEach(form => form.style.display = 'none'); // sab form chhupa do
+    forms.forEach(form => form.style.display = 'none'); 
 
     const selectedForm = document.getElementById(formId);
     if (selectedForm) {
-      selectedForm.style.display = 'block'; // selected form dikhaye
+      selectedForm.style.display = 'block'; 
     }
   }
+
   </script>
 </body>
 </html>

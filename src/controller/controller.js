@@ -36,7 +36,30 @@ exports.addStudent = (req, res) => {
     });
 };
 
+exports.viewUserData=(req,res)=>{
+
+  let result=mod.fetchDataFromUser();
+  result.then((data)=>{
+     res.render("viewAllUsers.ejs",{userData:data});
+  });
+ 
+};
 
 
 
+exports.updatePage=(req,res)=>{
+  let id=parseInt(req.query.id.trim());
+  let result=mod.FetchUserId(id);
+ result.then((data)=>{
+   res.render("updateUser.ejs",{d:data[0],msg:""});
+ });
+}
+exports.finalUpdate=(req,res)=>{
+  let id=parseInt(req.body.id);
+  let {name,email,password,role}=req.body;
+  let result=mod.FinalUpdateOfUser(name,email,password,role,id);
+  result.then((Udata)=>{
+    res.render("updateUser.ejs",{d:Udata,msg:"Updated Successfully"});
+  })
+}
 

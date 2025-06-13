@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>Update Student</title>
-<link rel="stylesheet" href="update.css"/>
+<link rel="stylesheet" href="updateUser.css"/>
 </head>
 <body>
 
   <div class="form-container">
     <h2>Update Student</h2>
-    <form action="/update-student" method="POST">
+    <form action="/fUpdate" method="POST">
       
-      <input type="hidden" name="id" value="" />
+      <input type="hidden" name="id" value="<%=d.id%>" />
 
-      <input type="text" name="name"  value="" required />
-      <input type="email" name="email"  value="" required />
-      <input type="password" name="password"  required />
+      <input type="text" name="name"  value="<%=d.name%>" required />
+      <input type="email" name="email"  value="<%=d.email%>" required />
+      <input type="password" name="password" value="<%=d.password%>"  required />
 
       <select name="role" required>
         <option value="">Select Role</option>
@@ -26,6 +26,7 @@
 
       <button type="submit">Update Student</button>
     </form>
+    <%=msg%>
   </div>
 
 </body>
