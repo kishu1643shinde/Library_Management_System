@@ -36,7 +36,22 @@ exports.addStudent = (req, res) => {
     });
 };
 
+exports.viewUserData=(req,res)=>{
 
+  let result=mod.fetchDataFromUser();
+  result.then((data)=>{
+     res.render("viewAllUsers.ejs",{userData:data});
+  });
+ 
+};
+
+// exports.acceptDataFromuser=(req,res)=>{
+
+//   let result=mod.fetchDataFromUser();
+//   result.then(data=>{
+//     res.render("dashboard.ejs",{userData:data});
+//   })
+// }
 
 
 

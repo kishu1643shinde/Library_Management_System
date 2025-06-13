@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="viewUsers">
+  <h2>📄 View Students</h2>
+   <!-- 🔍 Search Bar -->
+  <div style="margin-bottom: 20px;">
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="Search by name or username..." 
+      style="padding: 10px; width: 300px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px;"
+      onkeyup="filterTable()" />
+  </div>
+  <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; background-color: white; border-collapse: collapse; border: 1px solid #ccc;">
+    <thead style="background-color: #512da8; color: white;">
+      <tr>
+        <th style="padding: 15px 10px;">Sr No.</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Admission</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+       <%
+             userData.forEach((item,index)=>{
+             %>
+              <tr>
+               <td><%=(index+1)%></td>
+               <td><%=item.name%></td> 
+               <td><%=item.email%></td>
+               <td><%=item.password%></td>
+               <td><%=item.role%></td>
+               <td><%=item.created_at%></td>
+               <td><a href="#">DELETE</a></td>
+               <td><a href="#">UPDATE</a></td>
+            </tr>
+             <%
+             });
+            %>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
