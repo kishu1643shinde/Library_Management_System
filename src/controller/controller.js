@@ -46,6 +46,13 @@ exports.viewUserData=(req,res)=>{
 };
 
 
+exports.deleteUserData=(req,res)=>{
+  let did=parseInt(req.query.id);
+  let result=mod.finaldeleteUser(did);
+  result.then((d)=>{
+    mod.fetchDataFromUser(d);
+  });
+}
 
 exports.updatePage=(req,res)=>{
   let id=parseInt(req.query.id.trim());
