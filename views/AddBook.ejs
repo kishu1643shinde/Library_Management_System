@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Add Book to Category</h2>
+    <form action="/add-book-category" method="POST">
+      <label for="book">Select Book:</label>
+      <select name="book_id" id="book" required>
+        <% books.forEach(book => { %>
+          <option value="<%= book.id %>"><%= book.title %></option>
+        <% }) %>
+      </select>
+
+      <label for="category">Select Category:</label>
+      <select name="category_id" id="category" required>
+        <% categories.forEach(category => { %>
+          <option value="<%= category.id %>"><%= category.name %></option>
+        <% }) %>
+      </select>
+
+      <button type="submit">Assign Category</button>
+
+    </form>
+  </div>
+
+</body>
+</html>

@@ -94,3 +94,71 @@ exports.FinalUpdateOfUser=(...da)=>{
   })
 
 }
+exports.getCategoryData = (name) => {
+  return new Promise((resolve, reject) => {
+    db.query("INSERT INTO categories  (name)VALUES (?)", [name], (err, result) => {
+      if (err) {
+        console.error("Error inserting category:", err);
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+exports.viewCategoryData = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM categories", (err, result) => {
+      if (err) {
+        console.error("Error fetching categories:", err);
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+exports.finaldeleteCategory = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query("DELETE FROM categories WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        console.error("Error deleting category:", err);
+        reject(err);
+      } else {
+        db.query("SELECT * FROM categories", (err1, result1) => {
+          if (err1) {
+            reject(err1);
+          } else {
+            resolve(result1);
+          }
+        });
+      }
+    });
+  });
+};
+exports.fetchCategoryById = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM categories WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        console.error("Error fetching category by ID:", err);
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+exports.finalUpdateCategoryData = (name, id) => {
+  return new Promise((resolve,reject)=>{
+    db.query("UPDATE categories SET name = ? WHERE id = ?", [name, id], (err, result) =>{
+      if(err){
+        console.error("Error updating category:", err);
+        reject(err);
+      }
+      else{
+        resolve(result);
+        console.log("Category updated successfully:", result);
+      }
+    })
+  })
+};

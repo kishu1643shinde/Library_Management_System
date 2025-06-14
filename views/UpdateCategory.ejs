@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Addcategory.css">
+</head>
+<body>
+    <div class="form-container">
+    <h2 class="form-heading">➕ Update Category</h2>
+    <form action="/finalUpdateCat" method="POST" class="form-box">
+
+      <div class="form-group">
+        <!-- <label for="categoryId">Category ID</label> -->
+        <input type="hidden"  name="id" value="<%=categoryData.id%>" class="form-input" />
+      </div>
+
+      <div class="form-group">
+        <label for="categoryName">Category Name</label>
+        <input type="text" id="categoryName" name="name" value="<%=categoryData.name%>" required class="form-input" />
+      </div>
+
+      <button type="submit" class="form-button">Update Category</button>
+
+    </form>
+  <%=msg%>
+  </div>
+  
+</body>
+
+</body>
+</html>

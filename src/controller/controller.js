@@ -56,6 +56,7 @@ exports.deleteUserData=(req,res)=>{
 
 exports.updatePage=(req,res)=>{
   let id=parseInt(req.query.id.trim());
+   console.log("ID:", id);
   let result=mod.FetchUserId(id);
  result.then((data)=>{
    res.render("updateUser.ejs",{d:data[0],msg:""});
@@ -69,4 +70,66 @@ exports.finalUpdate=(req,res)=>{
     res.render("updateUser.ejs",{d:Udata,msg:"Updated Successfully"});
     
   })
+}
+exports.getCategory=(req,res)=>{
+  res.render("addcategory.ejs",{msg:""});
+}
+exports.addCategory = (req, res) => {
+  let name = req.body.name; 
+  let result = mod.getCategoryData(name);
+  result
+    .then((data) => {
+      console.log("Category Added Successfully", data);
+      res.render("addcategory.ejs", { msg: "Category Added Successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.render("addcategory.ejs", { msg: "Error Adding Category" });
+    });
+};
+exports.viewAllCategory = (req, res) => {
+  let result = mod.viewCategoryData();
+  result
+    .then((data) => {
+      res.render("viewCat.ejs", { categoryData: data });
+    })
+    .catch((err) => {
+      console.error("Error fetching categories:", err);
+      res.status(500).send("Error fetching categories");
+    });
+}
+exports.deleteCategoryData = (req, res) => {
+  let id = parseInt(req.query.id);
+  let result = mod.finaldeleteCategory(id);
+  result
+    .then((data) => {
+      res.render("viewCat.ejs", { categoryData: data });
+    })
+    .catch((err) => {
+      console.error("Error deleting category:", err);
+      res.status(500).send("Error deleting category");
+    });
+};
+exports.updateCategoryPage = (req, res) => {
+   let id=parseInt(req.query.id.trim());
+    console.log("ID:", id);
+  let result=mod.fetchCategoryById(id);
+ 
+ result.then((data)=>{
+   res.render("updateCategory.ejs",{categoryData:data[0],msg:""});
+});
+}
+exports.finalUpdateCategory = (req, res) => {
+  let id = parseInt(req.body.id);
+  let name = req.body.name;
+  let result = mod.finalUpdateCategoryData(name,id);
+  result
+    .then((data) => {
+      res.render("updateCategory.ejs", { categoryData: data, msg: "Updated Successfully" });
+      console.log("Category updated successfully:", data);
+    })
+    .catch((err) => {
+      console.error("Error updating category:", err);
+      res.status(500).send("Error updating category");
+    });
 }
