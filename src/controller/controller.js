@@ -50,7 +50,7 @@ exports.deleteUserData=(req,res)=>{
   let did=parseInt(req.query.id);
   let result=mod.finaldeleteUser(did);
   result.then((d)=>{
-    mod.fetchDataFromUser(d);
+     res.render("viewAllUsers.ejs",{userData:d});
   });
 }
 
@@ -70,4 +70,3 @@ exports.finalUpdate=(req,res)=>{
     
   })
 }
-

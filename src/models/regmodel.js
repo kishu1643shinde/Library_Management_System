@@ -56,9 +56,15 @@ exports.finaldeleteUser=(did)=>{
   return new Promise((resolve,reject)=>{
     db.query("delete from users where id=?",[did],(err,result)=>{
       if(err){
-        reject(err);
+
       }else{
-        resolve("Delete User SuccesFully....");
+        db.query("select * from users",(err1,result1)=>{
+        if(err1){
+        reject(err1);
+      }else{
+        resolve(result1);
+      }
+      });
       }
     });
   });

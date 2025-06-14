@@ -4,224 +4,29 @@
   <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #e0eafc, #cfdef3);
-      min-height: 100vh;
-    }
-
-    /* Navbar */
-    .navbar {
+    .main-content{
+      width: 100%;
+      height: 90vh;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #512da8;
-      padding: 15px 30px;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
+      background-color: rebeccapurple;
     }
-
-    .navbar .logo {
-      font-size: 24px;
-    }
-
-    .navbar ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-    }
-
-    .navbar ul li a {
-      text-decoration: none;
-      color: white;
-      font-weight: normal;
-      transition: color 0.3s;
-    }
-
-    .navbar ul li a:hover {
-      color: #ffeb3b;
-    }
-
-    /* Layout */
-    .container {
-      display: flex;
-      min-height: calc(100vh - 60px);
-    }
-
-    .sidebar {
-      width: 260px;
-      background-color: #fff;
-      padding: 20px;
-      border-right: 1px solid #ddd;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-    }
-
-    .sidebar .section {
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: #4a148c;
-      cursor: pointer;
-      margin-bottom: 5px;
-      padding: 8px 10px;
-      background-color: #ede7f6;
-      border-radius: 6px;
-      transition: background 0.3s;
-    }
-
-    .section-title:hover {
-      background-color: #d1c4e9;
-    }
-
-    .links {
-      display: none;
-      padding-left: 15px;
-      margin-top: 5px;
-    }
-
-    .links a {
-      display: block;
-      text-decoration: none;
-      color: #333;
-      font-size: 15px;
-      padding: 6px 10px;
-      margin-bottom: 5px;
-      background-color: #f3f4f6;
-      border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-
-    .links a:hover {
-      background-color: #c5cae9;
-      color: #000;
-    }
-
-    .main-content {
-      flex: 1;
-      padding: 40px;
-      background-color: #f8f9fa;
-    }
-
-    .main-content h2 {
-      color: #4a148c;
-      margin-bottom: 10px;
-    }
-    /* Add Student Form Styles */
-#addStudentForm {
-  background-color: #ffffff;
-  padding: 30px;
-  margin: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 500px;
-}
-
-#addStudentForm h2 {
-  margin-bottom: 20px;
-  color: #4a148c;
-}
-
-#addStudentForm form {
-  display: flex;
-  flex-direction: column;
-}
-
-#addStudentForm input,
-#addStudentForm select {
-  padding: 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-#addStudentForm button[type="submit"] {
-  padding: 12px;
-  background-color: #512da8;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#addStudentForm button[type="submit"]:hover {
-  background-color: #311b92;
-}
-.container{
-  display: flex;
-  flex-direction: row;
-  
-}
+    
+    
   </style>
 </head>
 <body>
   <!-- Navbar Include -->
+ <div>
   <%- include("navbar.ejs") %>
+</div> 
 
-  <!-- Page Content -->
-  <div class="container">
-    <aside class="sidebar">
-      <div class="section">
-        <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
-        <div class="links" id="studentLinks">
-          <a href="/addstudapp">➕ Add Student</a>
-          <a href="/viewData">📄 View Students</a>
-        </div>
-      </div>
-      <div class="section">
-        <div class="section-title" onclick="toggleMenu('categoryLinks')">📁 Category</div>
-        <div class="links" id="categoryLinks">
-          <a href="#">➕ Add Category</a>
-          <a href="#">📄 View Category</a>
-        </div>
-      </div>
-      <div class="section">
-        <div class="section-title" onclick="toggleMenu('bookLinks')">📚 Book</div>
-        <div class="links" id="bookLinks">
-          <a href="#">➕ Add Books</a>
-          <a href="#">📄 View Books</a>
-        </div>
-      </div>
-    </aside>
-
-    
- <main class="main-content">
-  <div id="welcomeMessage">
-    <h2>📚 Admin Dashboard</h2>
-    <p>Select any module from the left menu to manage students, categories, or books.</p>
+<div class="main-content">
+  <div class="box1">
+    <%- include("sidebar.ejs") %>
   </div>
-
-</main>
-
-  <script>
-    function toggleMenu(id) {
-      const element = document.getElementById(id);
-      element.style.display = (element.style.display === 'block') ? 'none' : 'block';
-    }
-
-    // this fuction call Add user from 
-  function showForm(formId) {
-    const forms = document.querySelectorAll('.main-content > div');
-    forms.forEach(form => form.style.display = 'none'); 
-
-    const selectedForm = document.getElementById(formId);
-    if (selectedForm) {
-      selectedForm.style.display = 'block'; 
-    }
-  }
-
-  </script>
+  <div class="box2">
+   
+</div>
+</div>
 </body>
 </html>
