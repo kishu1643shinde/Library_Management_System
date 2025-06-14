@@ -1,4 +1,4 @@
-    * {
+* {
       box-sizing: border-box;
     }
 
@@ -77,4 +77,3 @@
       background: linear-gradient(to right, #3498db, #2e86c1);
       transform: translateY(-1px);
     }
-  

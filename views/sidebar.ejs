@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+    <div class="container">
+    <aside class="sidebar">
+      <div class="section">
+        <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
+        <div class="links" id="studentLinks">
+          <a href="/addstudapp">➕ Add Student</a>
+          <a href="/viewData">📄 View Students</a>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title" onclick="toggleMenu('categoryLinks')">📁 Category</div>
+        <div class="links" id="categoryLinks">
+          <a href="#">➕ Add Category</a>
+          <a href="#">📄 View Category</a>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title" onclick="toggleMenu('bookLinks')">📚 Book</div>
+        <div class="links" id="bookLinks">
+          <a href="#">➕ Add Books</a>
+          <a href="#">📄 View Books</a>
+        </div>
+      </div>
+    </aside>
+
+    
+ <!-- <main class="main-content">
+  <div id="welcomeMessage">
+    <h2>📚 Admin Dashboard</h2>
+    <p>Select any module from the left menu to manage students, categories, or books.</p>
+  </div>
+
+</main> -->
+  </div>
+  <script>
+    function toggleMenu(id) {
+      const element = document.getElementById(id);
+      element.style.display = (element.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>
