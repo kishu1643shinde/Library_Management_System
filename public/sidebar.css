@@ -6,7 +6,7 @@
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      /* background: linear-gradient(to right, #e0eafc, #cfdef3); */
       min-height: 100vh;
     }
 
@@ -22,7 +22,9 @@
     .sidebar {
       width: 260px;
       background-color: #fff;
+       /* background-color: #c5cae9; */
       padding: 20px;
+      /* margin-top: 20px; */
       border-right: 1px solid #ddd;
       box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
     }

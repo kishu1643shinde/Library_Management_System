@@ -6,13 +6,20 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      /* background: linear-gradient(to right, #74ebd5, #acb6e5); */
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-    }
 
+    }
+/* #viewUsers {
+  
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    } */
     .form-container {
       background: white;
       padding: 40px 35px;
@@ -21,6 +28,9 @@
       width: 100%;
       max-width: 420px;
       animation: fadeIn 0.6s ease;
+      margin-top: 30%;
+      margin-left: 70%;
+     
     }
 
     @keyframes fadeIn {

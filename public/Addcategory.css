@@ -1,76 +1,81 @@
+/* AddCategory.css */
 * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .form-container {
-      background-color: #fff;
-      padding: 40px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 450px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
+.form-container {
+  background: white;
+  padding: 40px 35px;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  animation: fadeIn 0.6s ease;
+  margin-top: 30%;
+  margin-left: 70%;
+}
 
-    .form-heading {
-      text-align: center;
-      font-size: 24px;
-      color: #4a148c;
-      margin-bottom: 30px;
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .form-box {
-      display: flex;
-      flex-direction: column;
-    }
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+input,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  transition: border 0.3s, box-shadow 0.3s;
+}
 
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: #333;
-    }
+input:focus,
+select:focus {
+  border-color: #5dade2;
+  box-shadow: 0 0 5px rgba(93, 173, 226, 0.5);
+  outline: none;
+  background-color: #fff;
+}
 
-    .form-input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      transition: border-color 0.3s;
-    }
+button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #5dade2, #3498db);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
 
-    .form-input:focus {
-      outline: none;
-      border-color: #4a148c;
-    }
-
-    .form-button {
-      background-color: #512da8;
-      color: #fff;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .form-button:hover {
-      background-color: #311b92;
-    }
+button:hover {
+  background: linear-gradient(to right, #3498db, #2e86c1);
+  transform: translateY(-1px);
+}
