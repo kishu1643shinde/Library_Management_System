@@ -1,3 +1,4 @@
+const e = require('express');
 const db = require('../../db.js');
 
 
@@ -162,3 +163,117 @@ exports.finalUpdateCategoryData = (name, id) => {
     })
   })
 };
+exports.getAllCategories = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT name FROM categories", (err, results) => {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+};
+
+exports.addBookData = (
+  title,
+  author,
+  publisher,
+  isbn,
+  category,
+  status,
+  total_copies,
+  available_copies,
+  image
+) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      INSERT INTO books 
+      (title, author, publisher, isbn, category, status, total_copies, available_copies, image)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const values = [
+      title,
+      author,
+      publisher,
+      isbn,
+      category,
+      status,
+      total_copies,
+      available_copies,
+      image
+    ];
+
+    db.query(query, values, (err, result) => {
+      if (err) {
+        console.error("Error inserting book:", err);
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+ 
+exports.FetchAllBooks=()=>{
+return new Promise((resolve,reject)=>{
+  db.query("select *from books ",(err,result)=>{
+    if(err){
+      reject(err);
+    }
+    else{
+      resolve(result);
+    }
+  });
+})
+}
+
+
+exports.finaldeleteBooks = (id) => {
+  return new Promise((resolve, reject) => {
+    db.query("DELETE FROM books WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        console.error("Error deleting category:", err);
+        reject(err);
+      } else {
+        db.query("SELECT * FROM books", (err1, result1) => {
+          if (err1) {
+            reject(err1);
+          } else {
+            resolve(result1);
+          }
+        });
+      }
+    });
+  });
+};
+exports.UpdateBookRecord=(id)=>{
+return new Promise((resolve, reject) => {
+    db.query("SELECT  * FROM books where id=?",[id],(err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });}
+  exports.GetAllCategories = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM categories", (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+};
+
+  exports.FinalUpdateBookData=(...dataupdate)=>{
+    return new Promise((resolve,reject)=>{
+    db.query("update books set title=?,author=?,publisher=?,isbn=?,category=?,total_copies=?,available_copies=?,status=?,image=?,created_at=? where id=?",[...dataupdate],(err,result)=>{
+      if(err){
+        reject(err);
+      }
+      else{
+        resolve(result);
+        
+      }
+    });
+  
+  })
+  }

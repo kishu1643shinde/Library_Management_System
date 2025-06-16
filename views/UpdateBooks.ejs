@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update Book</title>
+  <link rel="stylesheet" href="/book.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h2>Update Book</h2>
+    <form action="/FinalBookUpdate" method="POST" enctype="multipart/form-data">
+      
+      <div class="form-row">
+          <input type="hidden" name="id" value="<%= books.id %>" />
+        <div class="form-group">
+          <label for="title">Title<span>*</span></label>
+          <input type="text" id="title" name="title" value="<%=books.title%>" required />
+        </div>
+        <div class="form-group">
+          <label for="author">Author<span>*</span></label>
+          <input type="text" id="author" name="author" value="<%=books.author%>" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="publisher">Publisher</label>
+          <input type="text" id="publisher" name="publisher"value="<%=books.publisher%>" />
+        </div>
+        <div class="form-group">
+          <label for="isbn">ISBN</label>
+          <input type="text" id="isbn" name="isbn" value="<%=books.isbn%>"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" value="<%=books.category%>" required>
+  <option value="">-- Select Category --</option>
+  <% categories.forEach(category => { %>
+    <option value="<%= category.name %>" <%= books.category === category.name ? 'selected' : '' %> >
+      <%= category.name %>
+    </option>
+  <% }) %>
+</select>
+        </div>
+
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" name="status" value="<%=books.status%>" required>
+            <option value="available">Available</option>
+            <option value="unavailable">Unavailable</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="total_copies">Total Copies<span>*</span></label>
+          <input type="number" id="total_copies" name="total_copies" value="<%=books.total_copies%>" required />
+        </div>
+        <div class="form-group">
+          <label for="available_copies">Available Copies<span>*</span></label>
+          <input type="number" id="available_copies" name="available_copies" value="<%=books.available_copies%>" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Upload Image</label>
+        <input type="file" id="image" name="image" value="<%=books.image%>" accept="image/*" />
+      </div>
+
+      <button type="submit">Update Book</button>
+    </form>
+    <%=msg%>
+  </div>
+</body>
+</html>

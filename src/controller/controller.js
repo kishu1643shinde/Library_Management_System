@@ -1,5 +1,6 @@
 let db=require("mysql2");
 let mod=require("../models/regmodel.js");
+const e = require("express");
 exports.HomePage=(req,res)=>{
     res.render("HomePage.ejs");
 }
@@ -27,7 +28,6 @@ exports.addStudent = (req, res) => {
   result
     .then(data => {
       console.log("Student added successfully:", data);
-    //   res.render("addstudent.ejs");// ors send a success response
    res.render("dashboard.ejs"); // Redirect to the add student page after successful addition
     })
     .catch(err => {
@@ -133,3 +133,93 @@ exports.finalUpdateCategory = (req, res) => {
       res.status(500).send("Error updating category");
     });
 }
+// Show add book form with categories
+exports.addBookPage = (req, res) => {
+  mod.getAllCategories()
+    .then(categories => {
+      res.render("AddBook.ejs", { categories, msg: null });
+    })
+    .catch(err => {
+      console.error("Error fetching categories:", err);
+      res.status(500).send("Failed to load categories");
+    });
+};
+
+// Insert book data
+exports.InsertBookData = (req, res) => {
+  const { title,author,publisher,isbn,category,status,total_copies,available_copies,} = req.body;
+  // Image handling (optional)
+  let image = req.file ? req.file.filename : null;
+
+  mod.addBookData(title,author,publisher,isbn,category,status,total_copies,available_copies,image )
+    .then(data => {
+      console.log("Book added successfully:", data);
+      return mod.getAllCategories(); // Get categories again for re-render
+    })
+    .then(categories => {
+      res.render("AddBook.ejs", {
+        msg: "Book added successfully",
+        categories
+      });
+    })
+    .catch(err => {
+      console.error("Error adding book:", err);
+      res.status(500).send("Error adding book");
+    });
+};
+exports.ViewAllBook=(req,res)=>{
+ let result=mod.FetchAllBooks();
+  result.then((data)=>{
+    res.render("viewB.ejs",{books:data});
+});
+};
+exports.DeleteBooksData=(req,res)=>{
+  let id=req.query.id;
+  let result=mod.finaldeleteBooks(id);
+  result.then((data)=>{
+    res.render("viewB.ejs",{books:data});
+  })
+
+}
+exports.updatebook = (req, res) => {
+  let id = parseInt(req.query.id.trim());
+
+  let result = mod.UpdateBookRecord(id);
+  let catResult = mod.GetAllCategories();
+  Promise.all([result, catResult]).then(([bookData, categories]) => {
+    res.render("UpdateBooks.ejs", {
+      books: bookData[0],
+      categories: categories, 
+      msg: ""
+    });
+  });
+};
+
+exports.finalUpdatebook = async (req, res) => {
+  try {
+    let {title,author,publisher,isbn,category,total_copies,available_copies,status,id} = req.body;
+
+    const image = req.file ? req.file.filename : null;
+    const created_at = new Date();
+
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    // First: Update the book
+    await mod.FinalUpdateBookData(title,author,publisher,isbn,category,total_copies,available_copies,status,image,created_at,id);
+
+    // Then: Fetch updated data and categories
+    const [updatedBookData] = await mod.UpdateBookRecord(id);
+    const categories = await mod.GetAllCategories();
+
+    res.render("UpdateBooks.ejs", {
+      books: updatedBookData,
+      categories: categories,
+      msg: "Updated Successfully"
+    });
+
+  } catch (error) {
+    console.error("Update Error:", error);
+    res.status(500).send("Error updating book.");
+  }
+};
