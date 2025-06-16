@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="sidebar.css">
-</head>
-<body>
-    <div class="container">
+ <div class="container">
     <aside class="sidebar">
       <div class="section">
         <div class="section-title" onclick="toggleMenu('studentLinks')">👨‍🎓 Student</div>
@@ -19,6 +10,7 @@
       <div class="section">
         <div class="section-title" onclick="toggleMenu('categoryLinks')">📁 Category</div>
         <div class="links" id="categoryLinks">
+          <!-- <iframe height="400px" width="700px" name="myframe"></iframe> -->
           <a href="/GetCat">➕ Add Category</a>
           <a href="/viewCategory">📄 View Category</a>
         </div>
@@ -47,5 +39,3 @@
       element.style.display = (element.style.display === 'block') ? 'none' : 'block';
     }
   </script>
-</body>
-</html>

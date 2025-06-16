@@ -1,54 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Students</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    #viewUsers {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      min-height: 90vh;
+    }
+    .table th {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+    }
+    .table td {
+      vertical-align: middle;
+    }
+    .pagination {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
+
+  <div class="container mt-4">
     <div id="viewUsers">
-  <h2>📄 View Students</h2>
-   <!-- 🔍 Search Bar -->
-  <div style="margin-bottom: 20px;">
-    <input 
-      type="text" 
-      id="searchInput" 
-      placeholder="Search by name or username..." 
-      style="padding: 10px; width: 300px; border-radius: 6px; border: 1px solid #ccc; font-size: 16px;"
-      onkeyup="filterTable()" />
-  </div>
-  <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; background-color: white; border-collapse: collapse; border: 1px solid #ccc;">
-    <thead style="background-color: #512da8; color: white;">
-      <tr>
-        <th style="padding: 15px 10px;">Sr No.</th>
-        <th>Name</th>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Role</th>
-        <th>Admission</th>
-        <th>Delete</th>
-        <th>Update</th>
-      </tr>
-    </thead>
-    <tbody>
-       <%
-             userData.forEach((item,index)=>{
-             %>
-              <tr>
-               <td><%=(index+1)%></td>
-               <td><%=item.name%></td> 
-               <td><%=item.email%></td>
-               <td><%=item.password%></td>
-               <td><%=item.role%></td>
-               <td><%=item.created_at%></td>
-               <td><a href="/deleteUser?id=<%=item.id%>">DELETE</a></td>
-               <td><a href="/update?id=<%=item.id%>">UPDATE</a></td>
+      <h2 class="mb-4 mt-4 text-primary">📄 View Students</h2>
+
+      <!-- Search Bar -->
+      <div class="mb-3">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="form-control w-50" 
+          placeholder="Search by name or username..." 
+          onkeyup="filterTable()" />
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Sr No.</th>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>Role</th>
+              <th>Admission</th>
+              <th>Delete</th>
+              <th>Update</th>
             </tr>
-             <%
-             });
-            %>
-    </tbody>
-  </table>
-</div>
+          </thead>
+          <tbody id="studentTable">
+            <% userData.forEach((item, index) => { %>
+              <tr>
+                <td class="text-center"><%= index + 1 %></td>
+                <td><%= item.name %></td>
+                <td><%= item.email %></td>
+                <td><%= item.password %></td>
+                <td><%= item.role %></td>
+                <td><%= item.created_at %></td>
+                <td class="text-center">
+                  <a href="/deleteUser?id=<%= item.id %>" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+                <td class="text-center">
+                  <a href="/update?id=<%= item.id %>" class="btn btn-primary btn-sm">Update</a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="d-flex justify-content-center">
+        <nav>
+          <ul class="pagination" id="paginationControls"></ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript: Search + Pagination -->
+  <script>
+    const rowsPerPage = 5;
+    let currentPage = 1;
+
+    function paginateTable() {
+      const filter = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#studentTable tr");
+      let filteredRows = [];
+
+      // Filter logic
+      rows.forEach(row => {
+        const name = row.cells[1].innerText.toLowerCase();
+        const username = row.cells[2].innerText.toLowerCase();
+        if (name.includes(filter) || username.includes(filter)) {
+          row.style.display = "";
+          filteredRows.push(row);
+        } else {
+          row.style.display = "none";
+        }
+      });
+
+      const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+      const start = (currentPage - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+
+      // Show only current page rows
+      filteredRows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? "" : "none";
+      });
+
+      // Render pagination
+      const pagination = document.getElementById("paginationControls");
+      pagination.innerHTML = "";
+
+      const prevLi = document.createElement("li");
+      prevLi.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+      prevLi.innerHTML = `<a class="page-link" href="#">Prev</a>`;
+      prevLi.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          paginateTable();
+        }
+      });
+      pagination.appendChild(prevLi);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const li = document.createElement("li");
+        li.className = `page-item ${i === currentPage ? "active" : ""}`;
+        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+        li.addEventListener("click", () => {
+          currentPage = i;
+          paginateTable();
+        });
+        pagination.appendChild(li);
+      }
+
+      const nextLi = document.createElement("li");
+      nextLi.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
+      nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;
+      nextLi.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          paginateTable();
+        }
+      });
+      pagination.appendChild(nextLi);
+    }
+
+    function filterTable() {
+      currentPage = 1; // reset to first page
+      paginateTable();
+    }
+
+    document.addEventListener("DOMContentLoaded", paginateTable);
+  </script>
+
 </body>
 </html>
