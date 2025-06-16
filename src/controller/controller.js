@@ -147,10 +147,13 @@ exports.finalUpdateCategory = (req, res) => {
     });
 }
 // Show add book form with categories
+// Book Section....
+
 exports.addBookPage = (req, res) => {
   mod.getAllCategories()
     .then(categories => {
-      res.render("AddBook.ejs", { categories, msg: null });
+      //res.render("AddBook.ejs", { categories, msg: null });
+      res.render("dashboard.ejs", { main_Content: "AddBook",categories,msg:"" });
     })
     .catch(err => {
       console.error("Error fetching categories:", err);
@@ -170,10 +173,8 @@ exports.InsertBookData = (req, res) => {
       return mod.getAllCategories(); // Get categories again for re-render
     })
     .then(categories => {
-      res.render("AddBook.ejs", {
-        msg: "Book added successfully",
-        categories
-      });
+      //res.render("AddBook.ejs", { msg: "Book added successfully",categories });
+      res.render("dashboard.ejs", { main_Content: "AddBook",msg:"Book added successfully",categories });
     })
     .catch(err => {
       console.error("Error adding book:", err);
@@ -183,14 +184,16 @@ exports.InsertBookData = (req, res) => {
 exports.ViewAllBook=(req,res)=>{
  let result=mod.FetchAllBooks();
   result.then((data)=>{
-    res.render("viewB.ejs",{books:data});
+    //res.render("viewB.ejs",{books:data});
+    res.render("dashboard.ejs", { main_Content: "viewB",books:data });
 });
 };
 exports.DeleteBooksData=(req,res)=>{
   let id=req.query.id;
   let result=mod.finaldeleteBooks(id);
   result.then((data)=>{
-    res.render("viewB.ejs",{books:data});
+    //res.render("viewB.ejs",{books:data});
+    res.render("dashboard.ejs", { main_Content: "viewB",books:data });
   })
 
 }
@@ -200,11 +203,8 @@ exports.updatebook = (req, res) => {
   let result = mod.UpdateBookRecord(id);
   let catResult = mod.GetAllCategories();
   Promise.all([result, catResult]).then(([bookData, categories]) => {
-    res.render("UpdateBooks.ejs", {
-      books: bookData[0],
-      categories: categories, 
-      msg: ""
-    });
+    //res.render("UpdateBooks.ejs", {books: bookData[0],categories: categories,  msg: "" });
+    res.render("dashboard.ejs", { main_Content: "UpdateBooks",books: bookData[0],categories: categories,  msg: ""  });
   });
 };
 
@@ -225,11 +225,8 @@ exports.finalUpdatebook = async (req, res) => {
     const [updatedBookData] = await mod.UpdateBookRecord(id);
     const categories = await mod.GetAllCategories();
 
-    res.render("UpdateBooks.ejs", {
-      books: updatedBookData,
-      categories: categories,
-      msg: "Updated Successfully"
-    });
+    //res.render("UpdateBooks.ejs", { books: updatedBookData,categories: categories,msg: "Updated Successfully" });
+    res.render("dashboard.ejs", { main_Content: "UpdateBooks",books: updatedBookData,categories: categories,msg: "Updated Successfully"  });
 
   } catch (error) {
     console.error("Update Error:", error);
