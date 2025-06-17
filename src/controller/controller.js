@@ -235,7 +235,6 @@ exports.finalUpdatebook = async (req, res) => {
     res.status(500).send("Error updating book.");
   }
 };
-<<<<<<< HEAD
 // Author wise book page
 
 
@@ -264,9 +263,7 @@ exports.AuthorWiseBookDataPage = (req, res) => {
       res.status(500).send("Failed to load books");
     });
 };
-=======
-
-
-// .....
->>>>>>> e06390f89d4895d5e6d29549ee31709fa4b53136
+exports.returnBookPage = (req, res) => {
+  res.render("ReturnBook",{msg:""});
+};
 

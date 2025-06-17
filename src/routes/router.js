@@ -38,6 +38,6 @@ router.get("/updateBook",controller.updatebook);
 router.post("/FinalBookUpdate", upload.single("image"), controller.finalUpdatebook);
 router.get("/AuthorWiseBook", controller.AuthorWiseBookPage);
 router.post("/AuthorWiseBookData", controller.AuthorWiseBookDataPage);
-
+router.get("/returnBook", controller.returnBookPage);
 
 module.exports = router;
