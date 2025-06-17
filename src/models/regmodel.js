@@ -277,7 +277,24 @@ return new Promise((resolve, reject) => {
     });
   
   })
-  }
+  };
+ 
+
+exports.getAllAuthors = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT DISTINCT author AS name FROM books", (err, result) => {
+      if (err) {
+        console.error("Error fetching authors:", err);
+        reject(err);
+      } else {
+        resolve(result); // [{name: 'Author1'}, {name: 'Author2'}, ...]
+      }
+    });
+  });
+};
+
+
+  
 
   // Issude book
 

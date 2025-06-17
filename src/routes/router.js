@@ -36,6 +36,8 @@ router.get("/viewBook",controller.ViewAllBook);
 router.get("/deleteBook",controller.DeleteBooksData);
 router.get("/updateBook",controller.updatebook);
 router.post("/FinalBookUpdate", upload.single("image"), controller.finalUpdatebook);
+router.get("/AuthorWiseBook", controller.AuthorWiseBookPage);
+router.post("/AuthorWiseBookData", controller.AuthorWiseBookDataPage);
 
 // router.get("/issudeFrom",controller.issudeFromDisplay);
 // router.post("/issudebooks",controller.issudeBookForUser);
