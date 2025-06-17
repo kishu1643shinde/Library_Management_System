@@ -38,14 +38,8 @@ router.get("/updateBook",controller.updatebook);
 router.post("/FinalBookUpdate", upload.single("image"), controller.finalUpdatebook);
 router.get("/AuthorWiseBook", controller.AuthorWiseBookPage);
 router.post("/AuthorWiseBookData", controller.AuthorWiseBookDataPage);
-router.get("/returnBook", controller.returnBookPage);
 
-// router.get("/issudeFrom",controller.issudeFromDisplay);
-// router.post("/issudebooks",controller.issudeBookForUser);
 
-// router.get("/get-books/:categoryId", controller.getBooksByCategory);
-
-// Show the form
 router.get('/issuebook', controller.showForm);
 router.get('/get-books/:categoryId', controller.getBooksByCategory);
 router.post('/issuebooks', controller.issueBook);

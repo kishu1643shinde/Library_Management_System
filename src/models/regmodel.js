@@ -307,7 +307,7 @@ exports.getBooksByAuthor = (author) => {
   });
 };
 
-  }
+  
 
   // Issude book
 
