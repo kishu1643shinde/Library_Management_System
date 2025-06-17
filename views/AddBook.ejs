@@ -68,7 +68,7 @@
               <select id="category" name="category" class="form-select" required>
                 <option value="">-- Select Category --</option>
                 <% categories.forEach(category => { %>
-                  <option value="<%= category.name %>"><%= category.name %></option>
+                  <option value="<%= category.id %>"><%= category.name %></option>
                 <% }) %>
               </select>
             </div>

@@ -37,5 +37,14 @@ router.get("/deleteBook",controller.DeleteBooksData);
 router.get("/updateBook",controller.updatebook);
 router.post("/FinalBookUpdate", upload.single("image"), controller.finalUpdatebook);
 
+// router.get("/issudeFrom",controller.issudeFromDisplay);
+// router.post("/issudebooks",controller.issudeBookForUser);
+
+// router.get("/get-books/:categoryId", controller.getBooksByCategory);
+
+// Show the form
+router.get('/issuebook', controller.showForm);
+router.get('/get-books/:categoryId', controller.getBooksByCategory);
+router.post('/issuebooks', controller.issueBook);
 
 module.exports = router;
