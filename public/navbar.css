@@ -5,18 +5,23 @@
   background: linear-gradient(to right, #1e3c72, #2a5298); /* Deep Blue Gradient */
   color: white;
   padding: 12px 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Softer shadow for elevation */
+  font-family: 'Segoe UI', sans-serif;
+  z-index: 1000;
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 12px;
+  animation: fadeInLogo 1s ease;
 }
 
 .logo img {
   width: 40px;
   height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.4); /* Subtle glow */
 }
 
 .logo-text {
@@ -24,7 +29,8 @@
   font-weight: bold;
   text-transform: uppercase;
   color: white;
-  line-height: 1;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Add subtle depth */
 }
 
 .navbar ul {
@@ -32,10 +38,11 @@
   display: flex;
   margin: 0;
   padding: 0;
+  gap: 10px;
 }
 
 .navbar ul li {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .navbar ul li a {
@@ -43,28 +50,44 @@
   color: white;
   font-size: 16px;
   font-weight: 500;
-  padding: 6px 10px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 6px;
   transition: all 0.3s ease;
+  background-color: transparent;
 }
 
 .navbar ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffeb3b;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffe600; /* Goldish hover */
+  transform: scale(1.05); /* Slight pop effect */
 }
 
 @media (max-width: 600px) {
   .navbar {
     flex-direction: column;
     align-items: flex-start;
+    padding: 16px;
   }
 
   .navbar ul {
     flex-direction: column;
     width: 100%;
+    gap: 0;
   }
 
   .navbar ul li {
-    margin: 10px 0;
+    margin: 8px 0;
+  }
+}
+
+/* Logo Fade-in Animation */
+@keyframes fadeInLogo {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }

@@ -39,4 +39,5 @@ router.post("/FinalBookUpdate", upload.single("image"), controller.finalUpdatebo
 router.get("/AuthorWiseBook", controller.AuthorWiseBookPage);
 router.post("/AuthorWiseBookData", controller.AuthorWiseBookDataPage);
 
+
 module.exports = router;
