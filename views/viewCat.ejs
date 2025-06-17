@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>View Categories</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     #viewUsers {
       background: white;
@@ -12,9 +13,10 @@
       padding: 30px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       min-height: 90vh;
+      margin-top: 23px;
     }
     .table th {
-      background-color: #6c63ff;
+      background-color: #343a40;
       color: white;
       text-align: center;
     }
@@ -28,9 +30,23 @@
       background-color: #6c63ff;
       color: white;
     }
-     .table {
+    .table {
       min-width: 950px;
     }
+    a[title] {
+      text-decoration: none;
+      font-size: 1.3rem;
+    }
+    a[title]:hover {
+      opacity: 0.8;
+    }
+    .text-gradient {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
   </style>
 </head>
 <body>
@@ -38,7 +54,7 @@
   <div class="container-fluid mt-4 ms-5 px-3">
     <div class="row">
       <div class="col-12" id="viewUsers">
-        <h2 class="mb-4 mt-4 text-primary">📄 View Categories</h2>
+        <h2 class="mb-4 fw-bold text-gradient">📄 View Categories</h2>
 
         <!-- Search Bar -->
         <div class="mb-3">
@@ -68,11 +84,19 @@
                   <td class="text-center"><%= index + 1 %></td>
                   <td><%= item.name %></td>
                   <td class="text-center">
-                    <a href="/deleteCategory?id=<%= item.id %>" class="btn btn-danger btn-sm"
-                      onclick="return confirm('Are you sure you want to delete this category?');">Delete</a>
+                    <a href="/deleteCategory?id=<%= item.id %>" 
+                       class="text-danger" 
+                       title="Delete"
+                       onclick="return confirm('Are you sure you want to delete this category?');">
+                      <i class="bi bi-trash-fill"></i>
+                    </a>
                   </td>
                   <td class="text-center">
-                    <a href="/updateCat?id=<%= item.id %>" class="btn btn-primary btn-sm">Update</a>
+                    <a href="/updateCat?id=<%= item.id %>" 
+                       class="text-primary" 
+                       title="Update">
+                      <i class="bi bi-pencil-square"></i>
+                    </a>
                   </td>
                 </tr>
               <% }); %>
