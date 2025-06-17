@@ -165,12 +165,13 @@ exports.finalUpdateCategoryData = (name, id) => {
 };
 exports.getAllCategories = () => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT name FROM categories", (err, results) => {
+    db.query("SELECT id, name FROM categories", (err, results) => {
       if (err) return reject(err);
       resolve(results);
     });
   });
 };
+
 
 exports.addBookData = (
   title,
@@ -214,7 +215,7 @@ exports.addBookData = (
  
 exports.FetchAllBooks=()=>{
 return new Promise((resolve,reject)=>{
-  db.query("select *from books ",(err,result)=>{
+  db.query("SELECT books.*, categories.name AS category_name FROM books JOIN categories ON books.category = categories.id ",(err,result)=>{
     if(err){
       reject(err);
     }
@@ -306,3 +307,72 @@ exports.getBooksByAuthor = (author) => {
   });
 };
 
+  }
+
+  // Issude book
+
+//   exports.checkEmailForUser=(userEmail)=>{
+//     return new Promise((resolve, reject)=>{
+//       db.query("select id from users where email=?",[userEmail],(err,result)=>{
+//         if(err){
+//           reject(err);
+//         }else{
+//           resolve(result);
+//           console.log("Result is:"+result);
+//         }
+//       });
+//     });
+//   }
+
+
+//   //...
+//   exports.getBooksForCategory = (categoryId) => {
+//   return new Promise((resolve, reject) => {
+//     const sql = `
+//       SELECT b.id, b.title 
+//       FROM books b
+//       JOIN book_categories bc ON b.id = bc.book_id
+//       WHERE bc.category_id = 1
+//     `;
+
+//     db.query(sql, [categoryId], (err, result) => {
+//       if (err) reject(err);
+//       else resolve(result);
+//     });
+//   });
+// };
+
+
+
+
+// Get all categories
+
+exports.getCategories = (callback) => {
+    db.query('SELECT * FROM categories', callback);
+};
+
+exports.getBooksByCategory = (categoryId, callback) => {
+    const sql = `SELECT id, title FROM books WHERE category = ?`;
+    db.query(sql, [categoryId], callback);
+};
+//....
+exports.issueBook = (data, callback) => {
+    const { book1, email, issue_date, return_date, status } = data;
+    db.query("SELECT id FROM users WHERE email = ?", [email], (err, results) => {
+        if (err) {
+            console.error("User lookup error:", err);
+            return res.status(500).send("Error fetching user");
+        }
+        if (results.length === 0) {
+            return res.status(404).send("User not found");
+        }
+        const userId = results[0].id;
+    console.log("Book ID to insert:", book1); // Should be a valid book ID
+
+    db.query(
+      "INSERT INTO issue_details (book_id, issued_by, issue_date, return_date, status) VALUES (?, ?, ?, ?, ?)",
+      [book1, userId, issue_date, return_date, status],
+      callback
+    );
+  });
+};

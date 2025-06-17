@@ -1,5 +1,6 @@
 let db=require("mysql2");
 let mod=require("../models/regmodel.js");
+const connn = require('../../db.js');
 const e = require("express");
 exports.HomePage=(req,res)=>{
     res.render("HomePage.ejs");
@@ -156,6 +157,7 @@ exports.addBookPage = (req, res) => {
     .then(categories => {
       //res.render("AddBook.ejs", { categories, msg: null });
       res.render("dashboard.ejs", { main_Content: "AddBook",categories,msg:"" });
+      
     })
     .catch(err => {
       console.error("Error fetching categories:", err);
@@ -265,5 +267,69 @@ exports.AuthorWiseBookDataPage = (req, res) => {
 };
 exports.returnBookPage = (req, res) => {
   res.render("ReturnBook",{msg:""});
+// .....issude Book 
+
+// exports.issudeFromDisplay=(req,res)=>{
+//    //res.render("IssudeBook.ejs");
+//    mod.getAllCategories()
+//     .then(categories => {
+     
+//       //res.render("dashboard.ejs", { main_Content: "AddBook",categories,msg:"" });
+//       res.render("IssudeBook.ejs",{categories,msg:""});
+//     })
+//     .catch(err => {
+//       console.error("Error fetching categories:", err);
+//       res.status(500).send("Failed to load categories");
+//     });
+// };
+
+// exports.issudeBookForUser=(req, res)=>{
+//   let userEmail=req.body.email;
+//   console.log("Email is: "+userEmail);
+
+//   let result=mod.checkEmailForUser(userEmail);
+//   result.then((r)=>{
+//     console.log(result);
+    
+//   });
+// };
+
+
+
+//...
+// Show form with all categories
+
+
+exports.showForm = (req, res) => {
+    mod.getCategories((err, categories) => {
+        if (err) return res.status(500).send("Error loading categories");
+        res.render('IssudeBook', { categories });
+    });
 };
 
+exports.getBooksByCategory = (req, res) => {
+    const categoryId = req.params.categoryId;
+    mod.getBooksByCategory(categoryId, (err, books) => {
+        if (err) return res.status(500).json({ error: 'Database error' });
+        res.json(books);
+    });
+};
+
+exports.issueBook = (req, res) => {
+    const { book1, email, issue_date, return_date, status } = req.body;
+    console.log("dd", book1, email, issue_date, return_date, status);
+
+    // Fetch user ID from email
+    
+
+        // Pass correct fields to model
+        mod.issueBook({ book1, email, issue_date, return_date, status }, (err) => {
+            if (err) {
+                console.error("IssueBook Error:", err);
+                return res.status(500).send("Error issuing book");
+            }
+            res.send("Book issued successfully!");
+        });
+    
+};
+}
