@@ -12,8 +12,10 @@ exports.acceptAdminDash=(req,res)=>{
     let {username, password} = req.body;
     if(username=="admin" && password=="admin@1643"){
        res.render("dashboard.ejs");
-    }else{
+    }
+    else{
         console.log("Login Faild");
+        
     }
 }
 exports.addStudentPage=(req,res)=>{
@@ -236,3 +238,32 @@ exports.finalUpdatebook = async (req, res) => {
     res.status(500).send("Error updating book.");
   }
 };
+// Author wise book page
+
+
+// Show initial page with authors only
+exports.AuthorWiseBookPage = (req, res) => {
+  mod.getAllAuthors()
+    .then(authors => {
+      res.render("AuthorWiseBook", { authors, books: null, selectedAuthor: null });
+    })
+    .catch(err => {
+      console.error("Error fetching authors:", err);
+      res.status(500).send("Failed to load authors");
+    });
+};
+
+// Handle form POST request
+exports.AuthorWiseBookDataPage = (req, res) => {
+  const author = req.body.author;
+
+  Promise.all([mod.getAllAuthors(), mod.getBooksByAuthor(author)])
+    .then(([authors, books]) => {
+      res.render("AuthorWiseBook", { authors, books, selectedAuthor: author });
+    })
+    .catch(err => {
+      console.error("Error fetching books:", err);
+      res.status(500).send("Failed to load books");
+    });
+};
+
