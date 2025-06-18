@@ -116,9 +116,12 @@
     <div class="login-form">
       <h2>Login to Library</h2>
       <form action="/acceptAdmin" method="POST">
-        <input type="text" name="username" placeholder="Enter Username" required />
-        <input type="password" name="password" placeholder="Enter Password" required />
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
+        <% if (typeof msg !== "undefined" && msg) { %>
+          <div class="alert alert-danger mt-2"><%= msg %></div>
+        <% } %>
       </form>
      
     </div>

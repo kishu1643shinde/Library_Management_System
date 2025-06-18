@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Issued Books</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    #viewIssuedBooks {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      min-height: 90vh;
+      margin-top: 23px;
+    }
+
+    .table th {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+    }
+
+    .table td {
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .btn-return {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 5px 15px;
+    }
+
+    .btn-return:hover {
+      background-color: #219150;
+    }
+
+    .returned-label {
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .text-gradient {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .pagination li a {
+      color: #6c63ff;
+    }
+
+    .pagination li.active a {
+      background-color: #6c63ff;
+      color: white;
+    }
+
+    .table {
+      min-width: 950px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid mt-4 ms-5 px-3">
+  <div class="row">
+    <div class="col-12" id="viewIssuedBooks">
+      <h2 class="mb-4 fw-bold text-gradient">📚 View Issued Books</h2>
+
+      <!-- Search -->
+      <div class="mb-3">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="form-control" 
+          style="max-width: 400px;"
+          placeholder="Search by User Name or Book Title..." 
+          onkeyup="filterAndPaginate()" />
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover w-100">
+          <thead>
+            <tr>
+              <th>Sr. No</th>
+              <th>User Name</th>
+              <th>Book Title</th>
+              <th>Issue Date</th>
+              <th>Return Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="issuedBookTable">
+            <% if (categories.length === 0) { %>
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">No records found</td>
+              </tr>
+            <% } else { %>
+              <% categories.forEach((book, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= book.userid %></td>
+                  <td><%= book.bookid %></td>
+                  <td><%= book.issue_date || '-' %></td>
+                  <td><%= book.return_date || '-' %></td>
+                  <td>
+                    <%= book.status ? (book.status.charAt(0).toUpperCase() + book.status.slice(1)) : 'Unknown' %>
+                  </td>
+                  <td>
+                    <% if (book.status !== 'returned') { %>
+                      <form action="/returnBook/<%= book.id %>" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-return" title="Return this book">
+                          &#8635; Return
+                        </button>
+                      </form>
+                    <% } else { %>
+                      <span class="returned-label">Returned</span>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-4 d-flex justify-content-center">
+        <nav>
+          <ul class="pagination" id="paginationControls"></ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Script: Pagination + Filter -->
+<script>
+  const rowsPerPage = 5;
+  let currentPage = 1;
+
+  function getVisibleRows() {
+    const filter = document.getElementById("searchInput").value.toLowerCase();
+    const allRows = Array.from(document.querySelectorAll("#issuedBookTable tr"));
+
+    return allRows.filter(row => {
+      const nameCell = row.cells[1];
+      const bookCell = row.cells[2];
+      const match = (
+        (nameCell && nameCell.textContent.toLowerCase().includes(filter)) ||
+        (bookCell && bookCell.textContent.toLowerCase().includes(filter))
+      );
+      row.style.display = match ? "" : "none";
+      return match;
+    });
+  }
+
+  function paginateTable() {
+    const visibleRows = getVisibleRows();
+    const totalPages = Math.ceil(visibleRows.length / rowsPerPage);
+
+    visibleRows.forEach(row => row.style.display = "none");
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    for (let i = start; i < end && i < visibleRows.length; i++) {
+      visibleRows[i].style.display = "";
+    }
+
+    const pagination = document.getElementById("paginationControls");
+    pagination.innerHTML = "";
+
+    const prev = document.createElement("li");
+    prev.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
+    prev.innerHTML = `<a class="page-link" href="#">Prev</a>`;
+    prev.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        paginateTable();
+      }
+    });
+    pagination.appendChild(prev);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const li = document.createElement("li");
+      li.className = `page-item ${currentPage === i ? "active" : ""}`;
+      li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+      li.addEventListener("click", () => {
+        currentPage = i;
+        paginateTable();
+      });
+      pagination.appendChild(li);
+    }
+
+    const next = document.createElement("li");
+    next.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
+    next.innerHTML = `<a class="page-link" href="#">Next</a>`;
+    next.addEventListener("click", () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        paginateTable();
+      }
+    });
+    pagination.appendChild(next);
+  }
+
+  function filterAndPaginate() {
+    currentPage = 1;
+    paginateTable();
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    paginateTable();
+  });
+</script>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

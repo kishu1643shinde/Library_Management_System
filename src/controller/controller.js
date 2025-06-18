@@ -8,14 +8,29 @@ exports.loginPage=(req,res)=>{
  res.render("login.ejs");
 
 }
-exports.acceptAdminDash=(req,res)=>{
-    let {username, password} = req.body;
-    if(username=="admin" && password=="admin@1643"){
-       res.render("dashboard.ejs");
-    }else{
-        console.log("Login Faild");
+exports.acceptAdminDash = async (req, res) => {
+  const { username, password } = req.body;
+
+  // Admin login (hardcoded)
+  if (username === "admin" && password === "admin@1643") {
+    req.session.user = { name: "admin", role: "admin" };
+    return res.render("dashboard.ejs", { main_Content: undefined, msg: "" });
+  }
+
+  // User login (from DB)
+  try {
+    const user = await mod.checkLogin(username, password);
+    if (user) {
+      req.session.user = { id: user.id, name: user.email, role: user.role || "user" };
+      return res.render("userDashboard.ejs", { user, msg: "" });
+    } else {
+      return res.render("login.ejs", { msg: "Invalid username or password" });
     }
-}
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.render("login.ejs", { msg: "Server error" });
+  }
+};
 exports.addStudentPage=(req,res)=>{
 res.render("dashboard.ejs", { main_Content: "addstudent",msg:""  });
 }
@@ -271,7 +286,8 @@ exports.finalUpdatebook = async (req, res) => {
 exports.showForm = (req, res) => {
     mod.getCategories((err, categories) => {
         if (err) return res.status(500).send("Error loading categories");
-        res.render('IssudeBook', { categories });
+        //res.render('IssudeBook', { categories });
+        res.render("dashboard.ejs", { main_Content: "IssudeBook",categories,msg:"" });
     });
 };
 
@@ -295,8 +311,11 @@ exports.issueBook = (req, res) => {
             if (err) {
                 console.error("IssueBook Error:", err);
                 return res.status(500).send("Error issuing book");
+            }else {
+              res.render("dashboard.ejs", { main_Content: "IssudeBook",categories:[],msg:"Book issued successfully" });
             }
-            res.send("Book issued successfully!");
+            console.log("Book issued successfully");
+            //res.send("Book issued successfully!");
         });
     
 };
@@ -309,3 +328,45 @@ exports.returnBookPage = (req, res) => {
   res.render("ReturnBook",{msg:""});
 };
 
+//return book page
+
+
+// ........
+// exports.acceptAdminDash = (req, res) => {
+//   mod.getDashboardCounts()
+//     .then((counts) => {
+//       res.render("dashboard", {
+//         counts,                 // ✅ pass counts
+//         main_Content: undefined // optional if you use conditional include
+//       });
+//     })
+//     .catch(err => {
+//       console.error("Error loading dashboard:", err);
+//       res.status(500).send("Dashboard error");
+//     });
+// };
+
+exports.returnIssuedBookData = (req, res) => {
+  mod.fetchIssuedBooks()
+    .then((data) => {
+      console.log("Issued Books Data:", data);
+      //res.render("ViewIssuedBook.ejs", { categories: data }); // Using the correct data
+      res.render("dashboard.ejs", { main_Content: "ViewIssuedBook", categories: data, msg: "" });
+    })
+    .catch((err) => {
+      console.error("Error fetching issued books:", err);
+      res.status(500).send("Error fetching issued books");
+    });
+};
+
+exports.returnBook = (req, res) => {
+  const id = req.params.id;
+  mod.returnBook(id, (err) => {
+    if (err) {
+      console.error("Error returning book:", err);
+      return res.status(500).send("Error returning book");
+    }
+    // Redirect to the issued books list after returning
+    res.redirect("/returnIssuedBook");
+  });
+};

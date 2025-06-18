@@ -280,42 +280,18 @@ return new Promise((resolve, reject) => {
   };
  
 
-
-  
-
-  // Issude book
-
-//   exports.checkEmailForUser=(userEmail)=>{
-//     return new Promise((resolve, reject)=>{
-//       db.query("select id from users where email=?",[userEmail],(err,result)=>{
-//         if(err){
-//           reject(err);
-//         }else{
-//           resolve(result);
-//           console.log("Result is:"+result);
-//         }
-//       });
-//     });
-//   }
-
-
-//   //...
-//   exports.getBooksForCategory = (categoryId) => {
-//   return new Promise((resolve, reject) => {
-//     const sql = `
-//       SELECT b.id, b.title 
-//       FROM books b
-//       JOIN book_categories bc ON b.id = bc.book_id
-//       WHERE bc.category_id = 1
-//     `;
-
-//     db.query(sql, [categoryId], (err, result) => {
-//       if (err) reject(err);
-//       else resolve(result);
-//     });
-//   });
-// };
-
+exports.getAllAuthors = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT DISTINCT author AS name FROM books", (err, result) => {
+      if (err) {
+        console.error("Error fetching authors:", err);
+        reject(err);
+      } else {
+        resolve(result); // [{name: 'Author1'}, {name: 'Author2'}, ...]
+      }
+    });
+  });
+};
 
 
 
@@ -326,7 +302,7 @@ exports.getCategories = (callback) => {
 };
 
 exports.getBooksByCategory = (categoryId, callback) => {
-    const sql = `SELECT id, title FROM books WHERE category = ?`;
+    const sql = "SELECT id, title FROM books WHERE category = ?";
     db.query(sql, [categoryId], callback);
 };
 //....
@@ -347,6 +323,47 @@ exports.issueBook = (data, callback) => {
       "INSERT INTO issue_details (book_id, issued_by, issue_date, return_date, status) VALUES (?, ?, ?, ?, ?)",
       [book1, userId, issue_date, return_date, status],
       callback
+    );
+  });
+};
+//fetch all issued books
+
+exports.fetchIssuedBooks = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        i.id,
+        u.name AS userid,         -- Show user name in userid column
+        b.title AS bookid,        -- Show book title in bookid column
+        DATE_FORMAT(i.issue_date, '%d-%m-%Y') AS issue_date,   -- Only date
+        DATE_FORMAT(i.return_date, '%d-%m-%Y') AS return_date, -- Only date
+        i.status
+      FROM issue_details i
+      JOIN users u ON i.issued_by = u.id
+      JOIN books b ON i.book_id = b.id
+      ORDER BY i.id ASC
+    `;
+    db.query(sql, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+};
+
+exports.returnBook = (id, callback) => {
+  db.query("UPDATE issue_details SET status = 'returned' WHERE id = ?", [id], callback);
+};
+
+exports.checkLogin = (username, password) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT * FROM users WHERE email = ? AND password = ?",
+      [username, password],
+      (err, results) => {
+        if (err) return reject(err);
+        if (results.length > 0) resolve(results[0]);
+        else resolve(null);
+      }
     );
   });
 };

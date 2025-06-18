@@ -41,5 +41,10 @@ router.post("/FinalBookUpdate", upload.single("image"), controller.finalUpdatebo
 router.get('/issuebook', controller.showForm);
 router.get('/get-books/:categoryId', controller.getBooksByCategory);
 router.post('/issuebooks', controller.issueBook);
+router.post('/returnBook/:id', controller.returnBook);
+// router.get('/dashboard', controller.acceptAdminDash);
 
+router.get("/returnIssuedBook", controller.returnIssuedBookData);
+
+router.get
 module.exports = router;
