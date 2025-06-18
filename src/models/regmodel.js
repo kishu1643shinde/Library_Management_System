@@ -280,32 +280,6 @@ return new Promise((resolve, reject) => {
   };
  
 
-exports.getAllAuthors = () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT DISTINCT author AS name FROM books", (err, result) => {
-      if (err) {
-        console.error("Error fetching authors:", err);
-        reject(err);
-      } else {
-        resolve(result); // [{name: 'Author1'}, {name: 'Author2'}, ...]
-      }
-    });
-  });
-};
-
-exports.getBooksByAuthor = (author) => {
-  return new Promise((resolve, reject) => {
-    const query = "SELECT id, title, category,status,total_copies,available_copies FROM books WHERE author = ?";
-    db.query(query, [author], (err, result) => {
-      if (err) {
-        console.error("Error fetching books:", err);
-        reject(err);
-      } else {
-        resolve(result); // [{id, title, category, year}, ...]
-      }
-    });
-  });
-};
 
   
 

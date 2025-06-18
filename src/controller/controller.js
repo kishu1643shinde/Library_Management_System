@@ -1,6 +1,5 @@
 let db=require("mysql2");
 let mod=require("../models/regmodel.js");
-const connn = require('../../db.js');
 const e = require("express");
 exports.HomePage=(req,res)=>{
     res.render("HomePage.ejs");
@@ -13,10 +12,8 @@ exports.acceptAdminDash=(req,res)=>{
     let {username, password} = req.body;
     if(username=="admin" && password=="admin@1643"){
        res.render("dashboard.ejs");
-    }
-    else{
+    }else{
         console.log("Login Faild");
-        
     }
 }
 exports.addStudentPage=(req,res)=>{
@@ -157,7 +154,6 @@ exports.addBookPage = (req, res) => {
     .then(categories => {
       //res.render("AddBook.ejs", { categories, msg: null });
       res.render("dashboard.ejs", { main_Content: "AddBook",categories,msg:"" });
-      
     })
     .catch(err => {
       console.error("Error fetching categories:", err);
@@ -237,36 +233,8 @@ exports.finalUpdatebook = async (req, res) => {
     res.status(500).send("Error updating book.");
   }
 };
-// Author wise book page
 
 
-// Show initial page with authors only
-exports.AuthorWiseBookPage = (req, res) => {
-  mod.getAllAuthors()
-    .then(authors => {
-      res.render("AuthorWiseBook", { authors, books: null, selectedAuthor: null });
-    })
-    .catch(err => {
-      console.error("Error fetching authors:", err);
-      res.status(500).send("Failed to load authors");
-    });
-};
-
-// Handle form POST request
-exports.AuthorWiseBookDataPage = (req, res) => {
-  const author = req.body.author;
-
-  Promise.all([mod.getAllAuthors(), mod.getBooksByAuthor(author)])
-    .then(([authors, books]) => {
-      res.render("AuthorWiseBook", { authors, books, selectedAuthor: author });
-    })
-    .catch(err => {
-      console.error("Error fetching books:", err);
-      res.status(500).send("Failed to load books");
-    });
-};
-exports.returnBookPage = (req, res) => {
-  res.render("ReturnBook",{msg:""});
 // .....issude Book 
 
 // exports.issudeFromDisplay=(req,res)=>{
@@ -332,4 +300,12 @@ exports.issueBook = (req, res) => {
         });
     
 };
-}
+// Author wise book page
+
+
+// Show initial page with authors only
+
+exports.returnBookPage = (req, res) => {
+  res.render("ReturnBook",{msg:""});
+};
+
