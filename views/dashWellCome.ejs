@@ -1,30 +1,93 @@
-<div class="container mt-5">
-  <h2 class="text-success text-center mb-4">📊 Admin Dashboard</h2>
-  <h4>Welcome, <%= adminName %>!</h4>
-  <div class="row mt-4">
-    <div class="col-md-4">
-      <div class="card text-white bg-primary mb-3">
-        <div class="card-header">Total Books</div>
-        <div class="card-body">
-          <h5 class="card-title"><%= totalBooks %></h5>
+<style>
+  .dashboard-wrapper {
+    padding: 20px;
+    margin-top: 60px;
+  }
+
+  .welcome-header {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #2c3e50;
+    
+  }
+
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+  }
+
+  .dashboard-card {
+    width: 280px;
+    background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    margin-left: 50px;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .dashboard-card .card-body {
+    text-align: center;
+  }
+
+  .dashboard-icon {
+    font-size: 40px;
+    color: #4a69bd;
+    margin-bottom: 15px;
+  }
+
+  .dashboard-card h4 {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .dashboard-card p {
+    color: #555;
+    font-size: 14px;
+  }
+</style>
+
+<div class="dashboard-wrapper">
+  <div class="welcome-header">Welcome, Admin 👋</div>
+  <div class="card-container">
+
+    <div class="card dashboard-card">
+      <div class="card-body">
+        <div class="dashboard-icon">
+          <i class="bi bi-people-fill"></i>
         </div>
+        <h4>Total Students</h4>
+        <p>View and manage student records.</p>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card text-white bg-success mb-3">
-        <div class="card-header">Total Students</div>
-        <div class="card-body">
-          <h5 class="card-title"><%= totalStudents %></h5>
+
+    <div class="card dashboard-card">
+      <div class="card-body">
+        <div class="dashboard-icon">
+          <i class="bi bi-book-half"></i>
         </div>
+        <h4>Total Books</h4>
+        <p>Check inventory of all books.</p>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card text-white bg-warning mb-3">
-        <div class="card-header">Total Authors</div>
-        <div class="card-body">
-          <h5 class="card-title"><%= totalAuthors %></h5>
+
+    <div class="card dashboard-card">
+      <div class="card-body">
+        <div class="dashboard-icon">
+          <i class="bi bi-journal-check"></i>
         </div>
+        <h4>Issued Books</h4>
+        <p>Monitor all issued and returned books.</p>
       </div>
     </div>
+
   </div>
 </div>

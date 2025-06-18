@@ -304,7 +304,8 @@ exports.AuthorWiseBookDataPage = (req, res) => {
 exports.showForm = (req, res) => {
     mod.getCategories((err, categories) => {
         if (err) return res.status(500).send("Error loading categories");
-        res.render('IssudeBook', { categories });
+        //res.render('IssudeBook', { categories });
+        res.render("dashboard.ejs", { main_Content: "IssudeBook",categories,msg:"" });
     });
 };
 
@@ -328,9 +329,29 @@ exports.issueBook = (req, res) => {
             if (err) {
                 console.error("IssueBook Error:", err);
                 return res.status(500).send("Error issuing book");
+            }else {
+              res.render("dashboard.ejs", { main_Content: "IssudeBook",categories:[],msg:"Book issued successfully" });
             }
-            res.send("Book issued successfully!");
+            console.log("Book issued successfully");
+            //res.send("Book issued successfully!");
         });
     
 };
 
+//return book page
+
+
+// ........
+// exports.acceptAdminDash = (req, res) => {
+//   mod.getDashboardCounts()
+//     .then((counts) => {
+//       res.render("dashboard", {
+//         counts,                 // ✅ pass counts
+//         main_Content: undefined // optional if you use conditional include
+//       });
+//     })
+//     .catch(err => {
+//       console.error("Error loading dashboard:", err);
+//       res.status(500).send("Dashboard error");
+//     });
+// };

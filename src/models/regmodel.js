@@ -363,3 +363,24 @@ exports.issueBook = (data, callback) => {
     );
   });
 };
+//fetch all issued books
+
+
+
+
+// ---------------
+// exports.getDashboardCounts = () => {
+//   return new Promise((resolve, reject) => {
+//     const sql = `
+//       SELECT 
+//         (SELECT COUNT(*) FROM users) AS user_count,
+//         (SELECT COUNT(*) FROM books) AS book_count,
+//         (SELECT COUNT(*) FROM categories) AS category_count
+//     `;
+//     db.query(sql, (err, results) => {
+//       if (err) reject(err);
+//       else resolve(results[0]);
+//     });
+//   });
+// };
+

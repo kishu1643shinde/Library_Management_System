@@ -49,4 +49,6 @@ router.get('/issuebook', controller.showForm);
 router.get('/get-books/:categoryId', controller.getBooksByCategory);
 router.post('/issuebooks', controller.issueBook);
 
+// router.get('/dashboard', controller.acceptAdminDash);
+
 module.exports = router;
