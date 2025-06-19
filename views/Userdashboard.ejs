@@ -43,7 +43,9 @@
       </div>
       <% }else{%>
         
-          <%- include("userProfile.ejs") %>
+       
+           <%- include("userProfile.ejs", { totalBooks: totalBooks, issuedBooks: issuedBooks, returnedBooks: returnedBooks }) %>
+
   <% } %>
 
     </div>

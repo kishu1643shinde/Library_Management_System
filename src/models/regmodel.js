@@ -414,3 +414,41 @@ ORDER BY i.id DESC
     });
   });
 };
+
+// Count all books
+exports.countAllBooks = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT COUNT(*) AS total FROM books", (err, result) => {
+      if (err) reject(err);
+      else resolve(result[0].total);
+    });
+  });
+};
+
+// Count issued books for a user
+exports.countIssuedBooksByUser = (userId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT COUNT(*) AS total FROM issue_details WHERE issued_by = ? AND status = 'issued'",
+      [userId],
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result[0].total);
+      }
+    );
+  });
+};
+
+// Count returned books for a user
+exports.countReturnedBooksByUser = (userId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      "SELECT COUNT(*) AS total FROM issue_details WHERE issued_by = ? AND status = 'returned'",
+      [userId],
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result[0].total);
+      }
+    );
+  });
+};

@@ -71,6 +71,55 @@
     color: #555;
     font-size: 14px;
   }
+
+  /* New styles for the dashboard cards section */
+  .dashboard-cards {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .dashboard-cards .card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    flex: 1 1 250px;
+    min-width: 250px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .dashboard-cards .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .dashboard-cards .icon {
+    font-size: 50px;
+    color: #0d6efd;
+    margin-bottom: 15px;
+  }
+
+  .dashboard-cards .count {
+    font-size: 28px;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 5px;
+  }
+
+  .dashboard-cards .label {
+    font-size: 16px;
+    color: #6c757d;
+  }
 </style>
 
 <div class="dashboard-wrapper">
@@ -95,7 +144,7 @@
         <div class="dashboard-icon">
           <i class="bi bi-people-fill"></i>
         </div>
-        <h4>Total Books</h4>
+        <h4>Total Books (<%= typeof totalBooks === 'undefined' ? 0 : totalBooks %>)</h4>
         <p>View and manage book records.</p>
       </div>
     </div>
@@ -105,7 +154,7 @@
         <div class="dashboard-icon">
           <i class="bi bi-book-half"></i>
         </div>
-        <h4>Issued Books</h4>
+        <h4>Issued Books (<%= typeof issuedBooks === 'undefined' ? 0 : issuedBooks %>)</h4>
         <p>Check inventory of all books.</p>
       </div>
     </div>
@@ -115,10 +164,12 @@
         <div class="dashboard-icon">
           <i class="bi bi-journal-check"></i>
         </div>
-        <h4>Returned Books</h4>
+        <h4>Returned Books (<%= typeof returnedBooks === 'undefined' ? 0 : returnedBooks %>)</h4>
         <p>Monitor all issued and returned books.</p>
       </div>
     </div>
 
   </div>
+
+
 </div>

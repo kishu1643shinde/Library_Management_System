@@ -30,8 +30,23 @@ exports.acceptAdminDash = async (req, res) => {
       const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: "2h" });
       res.cookie("token", token, { httpOnly: true });
       req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
-      // Pass user object here
-      return res.render("Userdashboard.ejs", { main_Content: undefined, msg: "", user: req.session.user });
+
+      // Fetch counts for user profile dashboard
+      const [totalBooks, issuedBooks, returnedBooks] = await Promise.all([
+        mod.countAllBooks(),
+        mod.countIssuedBooksByUser(user.id),
+        mod.countReturnedBooksByUser(user.id)
+      ]);
+
+      // Pass counts to Userdashboard.ejs
+      return res.render("Userdashboard.ejs", {
+        main_Content: undefined,
+        msg: "",
+        user: req.session.user,
+        totalBooks,
+        issuedBooks,
+        returnedBooks
+      });
     } else {
       return res.render("login.ejs", { msg: "Invalid credentials" });
     }
@@ -392,4 +407,26 @@ exports.myIssuedBooks = (req, res) => {
       console.error("Error fetching user's issued books:", err);
       res.status(500).send("Error fetching issued books");
     });
+};
+// user profiles counts..
+exports.userDashboard = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const [totalBooks, issuedBooks, returnedBooks] = await Promise.all([
+      mod.countAllBooks(),
+      mod.countIssuedBooksByUser(userId),
+      mod.countReturnedBooksByUser(userId)
+    ]);
+
+    return res.render("Userdashboard.ejs", {
+      main_Content: undefined,
+      msg: "",
+      user: req.session.user,
+      totalBooks,
+      issuedBooks,
+      returnedBooks
+    });
+  } catch (err) {
+    res.status(500).send("Error loading dashboard");
+  }
 };
