@@ -22,7 +22,7 @@ exports.acceptAdminDash = async (req, res) => {
     const user = await mod.checkLogin(username, password);
     if (user) {
       req.session.user = { id: user.id, name: user.email, role: user.role || "user" };
-      return res.render("userDashboard.ejs", { user, msg: "" });
+      return res.render("userDashboard", { user });
     } else {
       return res.render("login.ejs", { msg: "Invalid username or password" });
     }
@@ -369,4 +369,14 @@ exports.returnBook = (req, res) => {
     // Redirect to the issued books list after returning
     res.redirect("/returnIssuedBook");
   });
+};
+
+// User Module start.......
+
+exports.ViewAllBookLoginU = (req, res) => {
+  const { type, q } = req.query;
+  mod.FetchAllBooksLoginU(type, q)
+    .then((data) => {
+      res.render("Userdashboard.ejs", { main_Content: "viewAllBookLoginUser", books: data });
+    });
 };

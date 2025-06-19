@@ -367,3 +367,33 @@ exports.checkLogin = (username, password) => {
     );
   });
 };
+
+// user Module start.............
+
+exports.FetchAllBooksLoginU = (type, q) => {
+  let sql = `SELECT books.*, categories.name AS category_name FROM books JOIN categories ON books.category = categories.id`;
+  let params = [];
+
+  if (q && q.length > 0 && type && type !== "all") {
+    if (type === "author") {
+      sql += " WHERE books.author LIKE ?";
+      params.push(`%${q}%`);
+    } else if (type === "category") {
+      sql += " WHERE categories.name LIKE ?";
+      params.push(`%${q}%`);
+    } else if (type === "title") {
+      sql += " WHERE books.title LIKE ?";
+      params.push(`%${q}%`);
+    }
+  } else if (q && q.length > 0) {
+    sql += " WHERE books.title LIKE ? OR books.author LIKE ? OR categories.name LIKE ?";
+    params.push(`%${q}%`, `%${q}%`, `%${q}%`);
+  }
+
+  return new Promise((resolve, reject) => {
+    db.query(sql, params, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+};

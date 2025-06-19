@@ -1,5 +1,3 @@
-
-
 let routes = require("express");
 let router = routes.Router();
 let controller = require("../controller/controller.js");
@@ -45,6 +43,7 @@ router.post('/returnBook/:id', controller.returnBook);
 // router.get('/dashboard', controller.acceptAdminDash);
 
 router.get("/returnIssuedBook", controller.returnIssuedBookData);
+//user moudle routes
 
-router.get
+router.get("/viewAllBookLoginUser",controller.ViewAllBookLoginU);
 module.exports = router;

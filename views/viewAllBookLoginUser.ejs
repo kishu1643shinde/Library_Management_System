@@ -124,6 +124,59 @@
       font-weight: bold;
       color: black;
     }
+
+    /* Search Filter Styles */
+    .search-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: #ffffff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+}
+
+.search-filter label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+
+.search-filter select,
+.search-filter input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.search-filter select:focus,
+.search-filter input:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+.search-filter button {
+  padding: 10px 18px;
+  background: linear-gradient(to right, #2980b9, #3498db);
+  color: #fff;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.search-filter button:hover {
+  background: linear-gradient(to right, #2471a3, #1f618d);
+}
+
   </style>
 </head>
 <body>
@@ -131,9 +184,17 @@
   <div class="p-4" style="flex-grow: 1;">
     <h3 class="bookcount">All Books (<%= books.length %>)</h3>
 
-    <!-- JavaScript Search Bar -->
-    <div class="search-bar">
-      <input type="text" id="searchInput" class="form-control" placeholder="Search by title or author...">
+    <!-- Search Filter Section -->
+    <div class="search-filter">
+      <label for="searchType">Search By:</label>
+      <select id="searchType">
+        <option value="all">All Search</option>
+        <option value="author">Search by Author</option>
+        <option value="category">Search by Category</option>
+        <option value="title">Search by Title</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Search...">
+      <button onclick="searchBooks()">Search</button>
     </div>
 
     <!-- Book Cards -->
@@ -148,13 +209,13 @@
             <h5><%= book.title %></h5>
             <p><strong>Author:</strong> <%= book.author %></p>
             <p><strong>Category:</strong> <%= book.category_name %></p>
-            <p><strong>Available:</strong> <%= book.available_copies %> / <%= book.total_copies %></p>
+            <!-- <p><strong>Available:</strong> <%= book.available_copies %> / <%= book.total_copies %></p> -->
             <p><strong>Status:</strong> <%= book.status %></p>
           </div>
-          <div class="actions">
+          <!-- <div class="actions">
             <a href="/updatebook?id=<%= book.id %>" class="update-link">Update</a>
             <a href="/deletebook?id=<%= book.id %>" class="delete-link">Delete</a>
-          </div>
+          </div> -->
         </div>
       <% }); %>
     </div>
@@ -217,6 +278,15 @@
 
     // Initial load
     filterCards("");
+
+    // Search functionality
+    function searchBooks() {
+  const type = document.getElementById('searchType').value;
+  const query = document.getElementById('searchInput').value.trim();
+
+  // Redirect to a search route with query params
+  window.location.href = `/viewAllBookLoginUser?type=${type}&q=${encodeURIComponent(query)}`;
+}
   </script>
 
 </body>
