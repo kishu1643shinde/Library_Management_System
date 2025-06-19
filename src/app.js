@@ -1,7 +1,7 @@
 let express=require("express");
 let mysql=require("mysql2");
 let bodyparser=require("body-parser");
-let cookieParser=require("cookie-parser");
+const cookieParser = require("cookie-parser");
 let router=require("./routes/router.js");
 const session = require('express-session');
 let app=express();

@@ -1,6 +1,9 @@
 let db=require("mysql2");
 let mod=require("../models/regmodel.js");
 const e = require("express");
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "21122112$$55544$";
+
 exports.HomePage=(req,res)=>{
     res.render("HomePage.ejs");
 }
@@ -13,18 +16,24 @@ exports.acceptAdminDash = async (req, res) => {
 
   // Admin login (hardcoded)
   if (username === "admin" && password === "admin@1643") {
+    const token = jwt.sign({ name: "admin", role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
+    res.cookie("token", token, { httpOnly: true });
     req.session.user = { name: "admin", role: "admin" };
-    return res.render("dashboard.ejs", { main_Content: undefined, msg: "" });
+    // Pass user object here
+    return res.render("dashboard.ejs", { main_Content: undefined, msg: "", user: req.session.user });
   }
 
   // User login (from DB)
   try {
     const user = await mod.checkLogin(username, password);
     if (user) {
-      req.session.user = { id: user.id, name: user.email, role: user.role || "user" };
-      return res.render("userDashboard", { user });
+      const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: "2h" });
+      res.cookie("token", token, { httpOnly: true });
+      req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
+      // Pass user object here
+      return res.render("Userdashboard.ejs", { main_Content: undefined, msg: "", user: req.session.user });
     } else {
-      return res.render("login.ejs", { msg: "Invalid username or password" });
+      return res.render("login.ejs", { msg: "Invalid credentials" });
     }
   } catch (err) {
     console.error("Login error:", err);
@@ -319,8 +328,6 @@ exports.issueBook = (req, res) => {
         });
     
 };
-// Author wise book page
-
 
 // Show initial page with authors only
 
@@ -330,21 +337,6 @@ exports.returnBookPage = (req, res) => {
 
 //return book page
 
-
-// ........
-// exports.acceptAdminDash = (req, res) => {
-//   mod.getDashboardCounts()
-//     .then((counts) => {
-//       res.render("dashboard", {
-//         counts,                 // ✅ pass counts
-//         main_Content: undefined // optional if you use conditional include
-//       });
-//     })
-//     .catch(err => {
-//       console.error("Error loading dashboard:", err);
-//       res.status(500).send("Dashboard error");
-//     });
-// };
 
 exports.returnIssuedBookData = (req, res) => {
   mod.fetchIssuedBooks()
@@ -377,6 +369,27 @@ exports.ViewAllBookLoginU = (req, res) => {
   const { type, q } = req.query;
   mod.FetchAllBooksLoginU(type, q)
     .then((data) => {
-      res.render("Userdashboard.ejs", { main_Content: "viewAllBookLoginUser", books: data });
+      res.render("Userdashboard.ejs", { main_Content: "viewAllBookLoginUser", books: data, user: req.session.user });
+    });
+};
+
+exports.logout = (req, res) => {
+  res.clearCookie("token");
+  req.session.destroy(() => {
+    res.redirect("/Login");
+  });
+};
+// user show issued books
+exports.myIssuedBooks = (req, res) => {
+  const userId = req.user.id; // JWT se user id mil jayegi
+  mod.fetchIssuedBooksByUser(userId)
+    .then((books) => {
+      //res.render("Userdashboard.ejs", { main_Content: "myIssuedBook", issuedBooks: books, user: req.session.user });
+      //res.render("myIssuedBook.ejs", { issuedBooks: books, user: req.session.user  });
+      res.render("Userdashboard.ejs", { main_Content: "myIssuedBook", books_issued: books, user: req.session.user });
+    })
+    .catch((err) => {
+      console.error("Error fetching user's issued books:", err);
+      res.status(500).send("Error fetching issued books");
     });
 };

@@ -397,3 +397,20 @@ exports.FetchAllBooksLoginU = (type, q) => {
     });
   });
 };
+
+//user issued books
+exports.fetchIssuedBooksByUser = (userId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT i.id AS issue_id, b.id AS book_id, b.title, b.author, i.issue_date, i.return_date, i.status
+FROM issue_details i
+JOIN books b ON i.book_id = b.id
+WHERE i.issued_by = ?
+ORDER BY i.id DESC
+    `;
+    db.query(sql, [userId], (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+};
