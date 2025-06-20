@@ -1,175 +1,196 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
-<style>
-  .dashboard-wrapper {
-  padding: 40px 0 0 0;
-  margin-top: 61px;
-  width: 90%;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  background: linear-gradient(120deg, #e0ffe7 0%, #b2f0ff 100%);
-  border-radius: 25px;
-  box-shadow: 0 8px 32px rgba(25, 135, 84, 0.10);
-  transition: box-shadow 0.3s, background 0.3s;
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f0f2f5;
+    }
 
+    .dashboard-wrapper {
+      padding: 40px 0 0 0;
+      margin-top: 61px;
+      width: 90%;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(120deg, #e0ffe7 0%, #b2f0ff 100%);
+      border-radius: 25px;
+      box-shadow: 0 8px 32px rgba(25, 135, 84, 0.10);
+      transition: box-shadow 0.3s, background 0.3s;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .welcome-header {
-   padding: 20px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  margin-bottom: 30px;
-}
+    .welcome-header {
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      margin-bottom: 10px;
+      animation: fadeInDown 0.8s ease;
+    }
 
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 35px;
+      justify-content: center;
+      margin-left: 20px;
+      margin-top: 90px;
+    }
 
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 35px;
-    justify-content: center;
-    margin-left: 20px;
-    margin-top: 90px;
-  }
+    .dashboard-card {
+      width: 280px;
+      background: linear-gradient(135deg, #ffffff, #f7faff);
+      border-radius: 18px;
+      border: 1px solid #e0ecff;
+      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.05);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-  .dashboard-card {
-    width: 280px;
-    background: linear-gradient(145deg, #f0f0f0, #ffffff);
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-    margin-left: 0;
-  }
+    .dashboard-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
+      background: linear-gradient(135deg, #eaf6ff, #ffffff);
+    }
 
-  .dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-  }
+    .dashboard-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0)
+      );
+      transform: skewX(-25deg);
+      transition: left 0.75s ease;
+    }
 
-  .dashboard-card .card-body {
-    text-align: center;
-  }
+    .dashboard-card:hover::before {
+      left: 125%;
+    }
 
-  .dashboard-icon {
-    font-size: 40px;
-    color: #4a69bd;
-    margin-bottom: 15px;
-  }
+    .dashboard-card .card-body {
+      text-align: center;
+      padding: 30px 20px;
+    }
 
-  .dashboard-card h4 {
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
+    .dashboard-icon {
+      font-size: 48px;
+      color: #007bff;
+      margin-bottom: 20px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      text-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    }
 
-  .dashboard-card p {
-    color: #555;
-    font-size: 14px;
-  }
+    .dashboard-card:hover .dashboard-icon {
+      color: #0056b3;
+      transform: scale(1.2);
+      text-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
+    }
 
-  /* New styles for the dashboard cards section */
-  .dashboard-cards {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
+    .dashboard-card h4 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
 
-  .dashboard-cards .card {
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-    flex: 1 1 250px;
-    min-width: 250px;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
+    .dashboard-card p {
+      font-size: 14px;
+      color: #555;
+      margin: 0;
+    }
 
-  .dashboard-cards .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-  }
+    .emoji-wave {
+      display: inline-block;
+      animation: wave 1.8s infinite;
+      transform-origin: 70% 70%;
+    }
 
-  .dashboard-cards .icon {
-    font-size: 50px;
-    color: #0d6efd;
-    margin-bottom: 15px;
-  }
+    @keyframes wave {
+      0% { transform: rotate(0deg); }
+      15% { transform: rotate(14deg); }
+      30% { transform: rotate(-8deg); }
+      45% { transform: rotate(14deg); }
+      60% { transform: rotate(-4deg); }
+      75% { transform: rotate(10deg); }
+      100% { transform: rotate(0deg); }
+    }
 
-  .dashboard-cards .count {
-    font-size: 28px;
-    font-weight: 700;
-    color: #212529;
-    margin-bottom: 5px;
-  }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
 
-  .dashboard-cards .label {
-    font-size: 16px;
-    color: #6c757d;
-  }
-</style>
+<body>
 
-<div class="dashboard-wrapper">
-  <div class="welcome-header d-flex align-items-center" style="gap: 15px;">
-  <div class="icon-circle" style="font-size: 38px; color: #0d6efd;">
-    <i class="bi bi-person-circle"></i>
-  </div>
-  <div>
-    <div style="font-size: 24px; font-weight: 600; color: #212529;">
-      Welcome, <%= user.name %>!
-    </div>
-    <div style="font-size: 16px; color: #6c757d;">
-       "Let your next favorite book find you!"
-    </div>
-  </div>
-</div>
-
-  <div class="card-container">
-
-    <div class="card dashboard-card">
-      <div class="card-body">
-        <div class="dashboard-icon">
-          <i class="bi bi-people-fill"></i>
+  <div class="dashboard-wrapper">
+    <div class="welcome-header d-flex align-items-center" style="gap: 15px;">
+      <div class="icon-circle" style="font-size: 38px; color: #0d6efd;">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <div>
+        <div style="font-size: 24px; font-weight: 600; color: #212529;">
+          Welcome, <%= user.name %> <span class="emoji-wave">👋</span>
         </div>
-        <h4>Total Books (<%= typeof totalBooks === 'undefined' ? 0 : totalBooks %>)</h4>
-        <p>View and manage book records.</p>
+        <div style="font-size: 16px; color: #6c757d;">
+          "Let your next favorite book find you!"
+        </div>
       </div>
     </div>
 
-    <div class="card dashboard-card">
-      <div class="card-body">
-        <div class="dashboard-icon">
-          <i class="bi bi-book-half"></i>
-        </div>
-        <h4>Issued Books (<%= typeof issuedBooks === 'undefined' ? 0 : issuedBooks %>)</h4>
-        <p>Check inventory of all books.</p>
-      </div>
-    </div>
+    <div class="card-container">
 
-    <div class="card dashboard-card">
-      <div class="card-body">
-        <div class="dashboard-icon">
-          <i class="bi bi-journal-check"></i>
+      <div class="card dashboard-card">
+        <div class="card-body">
+          <div class="dashboard-icon">
+            <i class="bi bi-book"></i>
+          </div>
+          <h4>Total Books (<%= typeof totalBooks === 'undefined' ? 0 : totalBooks %>)</h4>
+          <p>View and manage book records.</p>
         </div>
-        <h4>Returned Books (<%= typeof returnedBooks === 'undefined' ? 0 : returnedBooks %>)</h4>
-        <p>Monitor all issued and returned books.</p>
       </div>
-    </div>
 
+      <div class="card dashboard-card">
+        <div class="card-body">
+          <div class="dashboard-icon">
+            <i class="bi bi-book-half"></i>
+          </div>
+          <h4>Issued Books (<%= typeof issuedBooks === 'undefined' ? 0 : issuedBooks %>)</h4>
+          <p>Check inventory of all books.</p>
+        </div>
+      </div>
+
+      <div class="card dashboard-card">
+        <div class="card-body">
+          <div class="dashboard-icon">
+            <i class="bi bi-journal-check"></i>
+          </div>
+          <h4>Returned Books (<%= typeof returnedBooks === 'undefined' ? 0 : returnedBooks %>)</h4>
+          <p>Monitor all issued and returned books.</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-
-</div>
+</body>
+</html>

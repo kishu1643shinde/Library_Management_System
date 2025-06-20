@@ -59,6 +59,7 @@ router.get("/viewAllBookLoginUser", auth.verifyToken, controller.ViewAllBookLogi
 //my issued books....
 router.get("/myIssuedBook", auth.verifyToken, auth.isUser, controller.myIssuedBooks);
 router.get("/userdashboard", auth.verifyToken, auth.isUser, controller.userDashboard);
+router.get("/profile", auth.verifyToken, controller.userProfilePage);
 
 // Logout (protected)
 router.get("/logout", auth.verifyToken, controller.logout);

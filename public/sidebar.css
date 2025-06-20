@@ -71,7 +71,11 @@ body {
   background-color: #b39ddb;
   color: white;
 }
-/* loout */
+.sidebar .links a.active {
+  background-color: #7e57c2; /* Bootstrap primary color */
+  color: white;
+  font-weight: bold;
+}
 .sidebar .links a[href="/logout"] {
   color: #dc3545; /* Bootstrap danger red */
   font-weight: bold;

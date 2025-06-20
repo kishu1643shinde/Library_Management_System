@@ -367,6 +367,38 @@ exports.checkLogin = (username, password) => {
     );
   });
 };
+//Admin Dashboard all counts.........
+//................................
+exports.countAllStudents = function() {
+  return new Promise((resolve, reject) => {
+    // db.query("SELECT COUNT(*) AS count FROM users WHERE role='student'", (err, result) => {
+       db.query("SELECT COUNT(*) AS count FROM users", (err, result) => {
+      if (err) return reject(err);
+      resolve(result[0].count);
+    });
+  });
+};
+
+exports.countAllBooks = function() {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT COUNT(*) AS count FROM books", (err, result) => {
+      if (err) return reject(err);
+      resolve(result[0].count);
+    });
+  });
+};
+
+exports.countAllIssuedBooks = function() {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT COUNT(*) AS count FROM issue_details", (err, result) => {
+      if (err) return reject(err);
+      resolve(result[0].count);
+    });
+  });
+};
+
+
+
 
 // user Module start.............
 
@@ -415,6 +447,8 @@ ORDER BY i.id DESC
   });
 };
 
+//user dashboard counts
+
 // Count all books
 exports.countAllBooks = () => {
   return new Promise((resolve, reject) => {
@@ -450,5 +484,14 @@ exports.countReturnedBooksByUser = (userId) => {
         else resolve(result[0].total);
       }
     );
+  });
+};
+// my profile page
+exports.getUserById = function(id) {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
+      if (err) return reject(err);
+      resolve(result[0]);
+    });
   });
 };

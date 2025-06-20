@@ -19,8 +19,23 @@ exports.acceptAdminDash = async (req, res) => {
     const token = jwt.sign({ name: "admin", role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
     res.cookie("token", token, { httpOnly: true });
     req.session.user = { name: "admin", role: "admin" };
-    // Pass user object here
-    return res.render("dashboard.ejs", { main_Content: undefined, msg: "", user: req.session.user });
+
+    // --- Yahan counts fetch karo ---
+    const [totalStudents, totalBooks, issuedBooks] = await Promise.all([
+      mod.countAllStudents(),    // <-- ye function model me hona chahiye
+      mod.countAllBooks(),
+      mod.countAllIssuedBooks()
+    ]);
+    // ------------------------------
+
+    return res.render("dashboard.ejs", {
+      main_Content: undefined,
+      msg: "",
+      user: req.session.user,
+      totalStudents,
+      totalBooks,
+      issuedBooks
+    });
   }
 
   // User login (from DB)
@@ -428,5 +443,16 @@ exports.userDashboard = async (req, res) => {
     });
   } catch (err) {
     res.status(500).send("Error loading dashboard");
+  }
+};
+//my profile page
+exports.userProfilePage = async (req, res) => {
+  try {
+    const userId = req.session.user.id;
+    const user = await mod.getUserById(userId); // You should have this function in your model
+    //res.render("myProfile.ejs", { user });
+    res.render("Userdashboard.ejs", { main_Content: "myProfile", user });
+  } catch (err) {
+    res.status(500).send("Error loading profile");
   }
 };
