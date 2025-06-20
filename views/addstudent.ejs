@@ -12,8 +12,8 @@
     <h2> Add Student</h2>
     <form action="/add-student" method="POST">
       <input type="text" name="name" placeholder="Enter Name" required />
-      <input type="email" name="email" placeholder="Enter Email" required />
-      <input type="password" name="password" placeholder="Enter Password" required />
+      <input type="email" name="email" placeholder="Enter Email" required autocomplete="off" />
+      <input type="password" name="password" placeholder="Enter Password" required autocomplete="new-password" />
       <select name="role" required>
         <option value="">Select Role</option>
         <option value="librarian">Librarian</option>
@@ -21,9 +21,21 @@
         <option value="member">Member</option>
       </select>
       <button type="submit">Add Student</button>
-    </form><%=msg%>
+    </form>
+
+    <% if (typeof msg !== "undefined" && msg) { %>
+      <div class="alert alert-success mt-3" role="alert" style="font-weight:500; font-size:1.1rem;">
+        <i class="bi bi-check-circle-fill"></i> <%= msg %>
+      </div>
+    <% } %>
   </div>
 <!-- </div> -->
+<script>
+  setTimeout(() => {
+    const alert = document.querySelector('.alert-success');
+    if(alert) alert.style.display = 'none';
+  }, 3000); // 3 seconds
+</script>
 </body>
  
 

@@ -181,7 +181,8 @@
     const prev = document.createElement("li");
     prev.className = `page-item ${currentPage === 1 ? "disabled" : ""}`;
     prev.innerHTML = `<a class="page-link" href="#">Prev</a>`;
-    prev.addEventListener("click", () => {
+    prev.addEventListener("click", (event) => {
+      event.preventDefault();
       if (currentPage > 1) {
         currentPage--;
         paginateTable();
@@ -189,11 +190,13 @@
     });
     pagination.appendChild(prev);
 
+    // Page numbers
     for (let i = 1; i <= totalPages; i++) {
       const li = document.createElement("li");
       li.className = `page-item ${currentPage === i ? "active" : ""}`;
       li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-      li.addEventListener("click", () => {
+      li.addEventListener("click", (event) => {
+        event.preventDefault();
         currentPage = i;
         paginateTable();
       });
@@ -203,7 +206,8 @@
     const next = document.createElement("li");
     next.className = `page-item ${currentPage === totalPages ? "disabled" : ""}`;
     next.innerHTML = `<a class="page-link" href="#">Next</a>`;
-    next.addEventListener("click", () => {
+    next.addEventListener("click", (event) => {
+      event.preventDefault();
       if (currentPage < totalPages) {
         currentPage++;
         paginateTable();

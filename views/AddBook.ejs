@@ -101,16 +101,24 @@
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Add Book</button>
           </div>
-          
-          <div class="mt-3 text-center text-success">
-            <%= msg %>
-          </div>
+
+          <% if (typeof msg !== "undefined" && msg) { %>
+            <div class="alert alert-success mt-3 text-center" role="alert" style="font-weight:500; font-size:1.1rem;">
+              <i class="bi bi-check-circle-fill"></i> <%= msg %>
+            </div>
+          <% } %>
 
         </form>
       </div>
     </div>
   </div>
 
+  <script>
+    setTimeout(() => {
+      const alert = document.querySelector('.alert-success');
+      if(alert) alert.style.display = 'none';
+    }, 3000); // 3 seconds
+  </script>
 </body>
  
 
