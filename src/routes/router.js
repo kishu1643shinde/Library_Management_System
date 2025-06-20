@@ -64,4 +64,5 @@ router.get("/profile", auth.verifyToken, controller.userProfilePage);
 // Logout (protected)
 router.get("/logout", auth.verifyToken, controller.logout);
 
+
 module.exports = router;

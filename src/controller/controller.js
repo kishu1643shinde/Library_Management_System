@@ -255,7 +255,7 @@ exports.updatebook = (req, res) => {
   let id = parseInt(req.query.id.trim());
 
   let result = mod.UpdateBookRecord(id);
-  let catResult = mod.GetAllCategories();
+  let catResult = mod.getAllCategories();
   Promise.all([result, catResult]).then(([bookData, categories]) => {
     //res.render("UpdateBooks.ejs", {books: bookData[0],categories: categories,  msg: "" });
     res.render("dashboard.ejs", { main_Content: "UpdateBooks",books: bookData[0],categories: categories,  msg: ""  });
@@ -264,8 +264,9 @@ exports.updatebook = (req, res) => {
 
 exports.finalUpdatebook = async (req, res) => {
   try {
-    let {title,author,publisher,isbn,category,total_copies,available_copies,status,id} = req.body;
-
+   const { title, author, publisher, isbn, category, total_copies, available_copies, status, id } = req.body;
+    console.log("category:", category);
+    
     const image = req.file ? req.file.filename : null;
     const created_at = new Date();
 
@@ -403,12 +404,7 @@ exports.ViewAllBookLoginU = (req, res) => {
     });
 };
 
-exports.logout = (req, res) => {
-  res.clearCookie("token");
-  req.session.destroy(() => {
-    res.redirect("/Login");
-  });
-};
+
 // user show issued books
 exports.myIssuedBooks = (req, res) => {
   const userId = req.user.id; // JWT se user id mil jayegi
@@ -455,4 +451,14 @@ exports.userProfilePage = async (req, res) => {
   } catch (err) {
     res.status(500).send("Error loading profile");
   }
+};
+
+
+// logout.......
+// controller.js
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie("token");
+    res.redirect("/Login");
+  });
 };

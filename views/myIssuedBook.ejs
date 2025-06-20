@@ -1,80 +1,113 @@
-<style>
-  .wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40vh; /* adjust based on your layout */
-    flex-direction: column;
-    margin-left: 260px;
-    margin-top: 10%;
-    background: linear-gradient(120deg, #e0ffe7 0%, #b2f0ff 100%);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Issued Book Details</title>
+  <style>
+    .wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-left: 190px;
+      margin-top: 10%;
+      background: linear-gradient(120deg, #e0ffe7 0%, #b2f0ff 100%);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
 
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #2c3e50;
-  }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
 
-  .table-container {
-    width: 100%;
-    max-width: 1700px;
-  }
+    .table-container {
+      width: 100%;
+      max-width: 1700px;
+      overflow-x: auto;
+    }
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    background-color: #fefefe;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #fefefe;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-  th, td {
-    padding: 12px 16px;
-    text-align: center;
-    border: 1px solid #dee2e6;
-  }
+    th, td {
+      padding: 12px 16px;
+      text-align: center;
+      border: 1px solid #dee2e6;
+    }
 
-  thead {
-    background-color: #343a40;
-    color: white;
-  }
+    thead {
+      background-color: #343a40;
+      color: white;
+    }
 
-  tbody tr:nth-child(odd) {
-    background-color: #f8f9fa;
-  }
+    tbody tr:nth-child(odd) {
+      background-color: #f8f9fa;
+    }
 
-  tbody tr:hover {
-    background-color: #f1f1f1;
-  }
+    tbody tr:hover {
+      background-color: #f1f1f1;
+    }
 
-  .badge {
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-weight: 500;
-    font-size: 0.9em;
-    display: inline-block;
-  }
+    .badge {
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.9em;
+      display: inline-block;
+    }
 
-  .bg-success {
-    background-color: #28a745;
-    color: #fff;
-  }
+    .bg-success {
+      background-color: #28a745;
+      color: #fff;
+    }
 
-  .bg-warning {
-    background-color: #ffc107;
-    color: #000;
-  }
-</style>
+    .bg-warning {
+      background-color: #ffc107;
+      color: #000;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 5px;
+    }
+
+    .pagination button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .pagination button.disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .pagination button.active {
+      background-color: #343a40;
+    }
+  </style>
+</head>
+<body>
 
 <div class="wrapper">
   <h2 class="mb-4 fw-bold text-gradient">My Issued Book Details</h2>
   <div class="table-container">
-    <table>
+    <table id="issuedTable">
       <thead>
         <tr>
           <th>Issue ID</th>
@@ -86,7 +119,7 @@
           <th>Status</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="tableBody">
         <% books_issued.forEach(function(book) { %>
           <tr>
             <td><%= book.issue_id %></td>
@@ -104,5 +137,63 @@
         <% }) %>
       </tbody>
     </table>
+    <div class="pagination" id="pagination"></div>
   </div>
 </div>
+
+<script>
+  const rowsPerPage = 5;
+  const table = document.getElementById("issuedTable");
+  const tbody = document.getElementById("tableBody");
+  const pagination = document.getElementById("pagination");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  let currentPage = 1;
+
+  function displayPage(page) {
+    tbody.innerHTML = "";
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    rows.slice(start, end).forEach(row => tbody.appendChild(row));
+    updatePagination(page);
+  }
+
+  function updatePagination(current) {
+    pagination.innerHTML = "";
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+
+    const prev = document.createElement("button");
+    prev.textContent = "Prev";
+    prev.classList.add(current === 1 ? "disabled" : "");
+    prev.onclick = () => {
+      if (current > 1) displayPage(current - 1);
+    };
+    pagination.appendChild(prev);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i;
+      if (i === current) btn.classList.add("active");
+      btn.onclick = () => displayPage(i);
+      pagination.appendChild(btn);
+    }
+
+    const next = document.createElement("button");
+    next.textContent = "Next";
+    next.classList.add(current === totalPages ? "disabled" : "");
+    next.onclick = () => {
+      if (current < totalPages) displayPage(current + 1);
+    };
+    pagination.appendChild(next);
+  }
+
+  window.onload = () => {
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7">No books issued.</td></tr>`;
+    } else {
+      displayPage(currentPage);
+    }
+  };
+</script>
+
+</body>
+</html>
