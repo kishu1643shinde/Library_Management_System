@@ -97,7 +97,7 @@ exports.FinalUpdateOfUser=(...da)=>{
 }
 exports.getCategoryData = (name) => {
   return new Promise((resolve, reject) => {
-    db.query("INSERT INTO categories  (name)VALUES (?)", [name], (err, result) => {
+    db.query("INSERT INTO categories  VALUES ('0',?)", [name], (err, result) => {
       if (err) {
         console.error("Error inserting category:", err);
         reject(err);
@@ -165,7 +165,7 @@ exports.finalUpdateCategoryData = (name, id) => {
 };
 exports.getAllCategories = () => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT id, name FROM categories", (err, results) => {
+    db.query("SELECT id, name FROM categories",(err, results) => {
       if (err) return reject(err);
       resolve(results);
     });
@@ -257,7 +257,7 @@ return new Promise((resolve, reject) => {
   });}
   exports.GetAllCategories = () => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM categories", (err, result) => {
+    db.query("SELECT * FROM categories ", (err, result) => {
       if (err) reject(err);
       else resolve(result);
     });
