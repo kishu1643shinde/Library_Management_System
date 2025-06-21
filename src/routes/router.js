@@ -19,6 +19,7 @@ const upload = multer({ storage: storage });
 router.get("/", controller.HomePage);
 router.get("/Login", controller.loginPage);
 router.post("/acceptAdmin", controller.acceptAdminDash);
+router.get("/acceptAdmin", controller.acceptAdmin);
 
 // Admin-only routes (protected)
 router.get("/addstudapp", auth.verifyToken, auth.isAdmin, controller.addStudentPage);

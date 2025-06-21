@@ -11,6 +11,9 @@ exports.loginPage=(req,res)=>{
  res.render("login.ejs");
 
 }
+exports.acceptAdmin = (req, res) => {
+  res.redirect("/Login");
+}
 exports.acceptAdminDash = async (req, res) => {
   const { username, password } = req.body;
 

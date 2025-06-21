@@ -30,11 +30,23 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       width: 220px;
-      transition: transform 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInCard 0.6s ease forwards;
+    }
+
+    @keyframes fadeInCard {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .book-card:hover {
-      transform: translateY(-5px);
+      transform: scale(1.07) translateY(-5px);
+      z-index: 2;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .book-card img {
@@ -43,6 +55,12 @@
       object-fit: cover;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
+      transition: transform 0.4s;
+    }
+
+    .book-card img:hover {
+      transform: scale(1.05);
+      z-index: 2;
     }
 
     .card-content {
