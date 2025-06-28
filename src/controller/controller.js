@@ -465,3 +465,13 @@ exports.logout = (req, res) => {
     res.redirect("/Login");
   });
 };
+exports.addCategoryAjax = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const result = await mod.addCategory(name); // yahi function call ho
+    res.json({ success: true, category: { id: result.insertId, name } });
+  } catch (err) {
+    console.error("Add Category Error:", err);
+    res.json({ success: false });
+  }
+};

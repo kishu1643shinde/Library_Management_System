@@ -495,3 +495,12 @@ exports.getUserById = function(id) {
     });
   });
 };
+//dynamic category add
+exports.addCategory = (name) => {
+  return new Promise((resolve, reject) => {
+    db.query("INSERT INTO categories (name) VALUES (?)", [name], (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+};

@@ -65,5 +65,7 @@ router.get("/profile", auth.verifyToken, controller.userProfilePage);
 // Logout (protected)
 router.get("/logout", auth.verifyToken, controller.logout);
 
+router.post("/addNewCategory", auth.verifyToken, auth.isAdmin, controller.addCategoryAjax);
+
 
 module.exports = router;
