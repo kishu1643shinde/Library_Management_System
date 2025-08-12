@@ -11,108 +11,181 @@ exports.loginPage=(req,res)=>{
  res.render("login.ejs");
 
 }
-exports.acceptAdmin = (req, res) => {
-  res.redirect("/Login");
-}
 exports.acceptAdminDash = async (req, res) => {
   const { username, password } = req.body;
 
-  // Admin login (hardcoded)
+  // Admin login
   if (username === "admin" && password === "admin@1643") {
     const token = jwt.sign({ name: "admin", role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
-    res.cookie("token", token, { httpOnly: true });
-    req.session.user = { name: "admin", role: "admin" };
 
-    // --- Yahan counts fetch karo ---
-    const [totalStudents, totalBooks, issuedBooks] = await Promise.all([
-      mod.countAllStudents(),    // <-- ye function model me hona chahiye
-      mod.countAllBooks(),
-      mod.countAllIssuedBooks()
-    ]);
-    // ------------------------------
-
-    return res.render("dashboard.ejs", {
-      main_Content: undefined,
-      msg: "",
-      user: req.session.user,
-      totalStudents,
-      totalBooks,
-      issuedBooks
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // set to true if using HTTPS
+      sameSite: "Lax" // or "None" if using HTTPS
     });
+
+    req.session.user = { name: "admin", role: "admin" };
+    return res.json({ success: true, role: "admin" });
   }
 
-  // User login (from DB)
   try {
     const user = await mod.checkLogin(username, password);
     if (user) {
-      const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: "2h" });
-      res.cookie("token", token, { httpOnly: true });
-      req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
+      const token = jwt.sign(
+        { id: user.id, name: user.name, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: "2h" }
+      );
 
-      // Fetch counts for user profile dashboard
-      const [totalBooks, issuedBooks, returnedBooks] = await Promise.all([
-        mod.countAllBooks(),
-        mod.countIssuedBooksByUser(user.id),
-        mod.countReturnedBooksByUser(user.id)
-      ]);
-
-      // Pass counts to Userdashboard.ejs
-      return res.render("Userdashboard.ejs", {
-        main_Content: undefined,
-        msg: "",
-        user: req.session.user,
-        totalBooks,
-        issuedBooks,
-        returnedBooks
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: false, // set to true if using HTTPS
+        sameSite: "Lax" // or "None" if using HTTPS
       });
+
+      req.session.user = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      };
+
+      return res.json({ success: true, role: user.role });
     } else {
-      return res.render("login.ejs", { msg: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid credentials" });
     }
   } catch (err) {
     console.error("Login error:", err);
-    return res.render("login.ejs", { msg: "Server error" });
+    return res.json({ success: false, message: "Server error" });
   }
 };
+
+
+// exports.acceptAdminDash = async (req, res) => {
+//   const { username, password } = req.body;
+
+//   // Admin login (hardcoded)
+//   if (username === "admin" && password === "admin@1643") {
+//     const token = jwt.sign({ name: "admin", role: "admin" }, JWT_SECRET, { expiresIn: "2h" });
+//     res.cookie("token", token, { httpOnly: true });
+//     req.session.user = { name: "admin", role: "admin" };
+
+//     // --- Yahan counts fetch karo ---
+//     const [totalStudents, totalBooks, issuedBooks] = await Promise.all([
+//       mod.countAllStudents(),    // <-- ye function model me hona chahiye
+//       mod.countAllBooks(),
+//       mod.countAllIssuedBooks()
+//     ]);
+//     // ------------------------------
+
+//     return res.render("dashboard.ejs", {
+//       main_Content: undefined,
+//       msg: "",
+//       user: req.session.user,
+//       totalStudents,
+//       totalBooks,
+//       issuedBooks
+//     });
+//   }
+
+//   // User login (from DB)
+//   try {
+//     const user = await mod.checkLogin(username, password);
+//     if (user) {
+//       const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: "2h" });
+//       res.cookie("token", token, { httpOnly: true });
+//       req.session.user = { id: user.id, name: user.name, email: user.email, role: user.role };
+
+//       // Fetch counts for user profile dashboard
+//       const [totalBooks, issuedBooks, returnedBooks] = await Promise.all([
+//         mod.countAllBooks(),
+//         mod.countIssuedBooksByUser(user.id),
+//         mod.countReturnedBooksByUser(user.id)
+//       ]);
+
+//       // Pass counts to Userdashboard.ejs
+//       return res.render("Userdashboard.ejs", {
+//         main_Content: undefined,
+//         msg: "",
+//         user: req.session.user,
+//         totalBooks,
+//         issuedBooks,
+//         returnedBooks
+//       });
+//     } else {
+//       return res.render("login.ejs", { msg: "Invalid credentials" });
+//     }
+//   } catch (err) {
+//     console.error("Login error:", err);
+//     return res.render("login.ejs", { msg: "Server error" });
+//   }
+// };
+
+//-------------------------------------------------------------add User in react//
 exports.addStudentPage=(req,res)=>{
 res.render("dashboard.ejs", { main_Content: "addstudent",msg:""  });
 }
 
 exports.addStudent = (req, res) => {
-  let { name, email, password,role } = req.body;
-
-  let result = mod.AddDataInUserTable(name, email, password,role);
-
+  let { name, email, password, role } = req.body;
+  let result = mod.AddDataInUserTable(name, email, password, role);
   result
     .then(data => {
-      console.log("Student added successfully:", data);
-      res.render("dashboard.ejs", { main_Content: "addstudent",msg:"User added successful"  });
-    //   res.render("addstudent.ejs");// ors send a success response
-   //res.render("dashboard.ejs"); // Redirect to the add student page after successful addition
+      res.json({ success: true, message: "User added successfully" });
     })
     .catch(err => {
-      console.error("Error adding student:", err);
-      res.status(500).send("Error adding student");
+      res.status(500).json({ success: false, message: "Error adding student" });
     });
 };
+//--------------------------------------------------add User in ejs//
+// exports.addStudentPage=(req,res)=>{
+// res.render("dashboard.ejs", { main_Content: "addstudent",msg:""  });
+// }
 
-exports.viewUserData=(req,res)=>{
+// exports.addStudent = (req, res) => {
+//   let { name, email, password,role } = req.body;
 
-  let result=mod.fetchDataFromUser();
-  result.then((data)=>{
-     res.render("dashboard.ejs",{ main_Content: "viewAllUsers",userData:data});
+//   let result = mod.AddDataInUserTable(name, email, password,role);
+
+//   result
+//     .then(data => {
+//       console.log("Student added successfully:", data);
+//       res.render("dashboard.ejs", { main_Content: "addstudent",msg:"User added successful"  });
+//     //   res.render("addstudent.ejs");// ors send a success response
+//    //res.render("dashboard.ejs"); // Redirect to the add student page after successful addition
+//     })
+//     .catch(err => {
+//       console.error("Error adding student:", err);
+//       res.status(500).send("Error adding student");
+//     });
+// };
+//-----------------------------------------------------------------------------------//
+exports.viewUserData = (req, res) => {
+  let result = mod.fetchDataFromUser();
+  result.then((data) => {
+    if (req.headers.accept && req.headers.accept.includes("application/json")) {
+      res.json({ userData: data });
+    } else {
+      res.render("dashboard.ejs", { main_Content: "viewAllUsers", userData: data });
+    }
   });
- 
 };
 
 
-exports.deleteUserData=(req,res)=>{
-  let did=parseInt(req.query.id);
-  let result=mod.finaldeleteUser(did);
-  result.then((d)=>{
-     //res.render("viewAllUsers.ejs",{userData:d});
-      res.render("dashboard.ejs",{ main_Content: "viewAllUsers",userData:d});
+exports.deleteUserData = (req, res) => {
+  let did = parseInt(req.query.id);
+  let result = mod.finaldeleteUser(did);
+  result.then((d) => {
+    // d: updated user list after delete
+    if (req.headers.accept && req.headers.accept.includes("application/json")) {
+      res.json({ success: true, userData: d });
+    } else {
+      res.render("dashboard.ejs", { main_Content: "viewAllUsers", userData: d });
+    }
+  }).catch(err => {
+    res.status(500).json({ success: false, message: "Delete failed" });
   });
-}
+};
 
 exports.updatePage=(req,res)=>{
   let id=parseInt(req.query.id.trim());
@@ -458,13 +531,25 @@ exports.userProfilePage = async (req, res) => {
 
 
 // logout.......
-// controller.js
 exports.logout = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "Lax", // same as login
+    secure: false,   // same as login
+    path: "/",       // default path
+  });
   req.session.destroy(() => {
-    res.clearCookie("token");
-    res.redirect("/Login");
+    res.json({ success: true, message: "Logged out successfully" });
   });
 };
+
+
+// exports.logout = (req, res) => {
+//   req.session.destroy(() => {
+//     res.clearCookie("token");
+//     res.redirect("/Login");
+//   });
+// };
 exports.addCategoryAjax = async (req, res) => {
   const { name } = req.body;
   try {

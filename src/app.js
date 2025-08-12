@@ -3,6 +3,7 @@ let mysql=require("mysql2");
 let bodyparser=require("body-parser");
 const cookieParser = require("cookie-parser");
 let router=require("./routes/router.js");
+let cors = require("cors");
 const session = require('express-session');
 let app=express();
 app.use(bodyparser.json());
@@ -16,6 +17,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.use("/",router);
 app.use(express.static("public"));

@@ -20,19 +20,13 @@ exports.AddDataInUserTable = (...userData) => {
   });
 };
 
-exports.fetchDataFromUser=()=>{
-  return new Promise((resolve,reject)=>{
-    db.query("select *from users",(err,result)=>{
-      if(err)
-      {
-        reject(err);
-      }
-      else
-      {
-        resolve(result);
-      }
+exports.fetchDataFromUser = () => {
+  return new Promise((resolve, reject) => {
+    db.query("SELECT * FROM users", (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
     });
-  })
+  });
 }
 // exports.updateUserData=(userId, name, email, password, role)=>{
 //   return new Promise((resolve, reject) => {
@@ -53,23 +47,18 @@ exports.fetchDataFromUser=()=>{
 // }
 
 
-exports.finaldeleteUser=(did)=>{
-  return new Promise((resolve,reject)=>{
-    db.query("delete from users where id=?",[did],(err,result)=>{
-      if(err){
-
-      }else{
-        db.query("select * from users",(err1,result1)=>{
-        if(err1){
-        reject(err1);
-      }else{
-        resolve(result1);
-      }
+exports.finaldeleteUser = (id) => {
+  return new Promise((resolve, reject) => {
+    // Use 'id' as per your table
+    db.query("DELETE FROM users WHERE id = ?", [id], (err, result) => {
+      if (err) return reject(err);
+      db.query("SELECT * FROM users", (err2, rows) => {
+        if (err2) return reject(err2);
+        resolve(rows);
       });
-      }
     });
   });
-}
+};
 exports.FetchUserId=(id)=>{
   return new Promise((resolve, reject) => {
     db.query("SELECT  * FROM users where id=?",[id],(err, result) => {
